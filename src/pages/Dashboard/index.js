@@ -1,3 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
+import React from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -5,11 +8,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
-import StatusCount from '../../components/StatusCount';
 import CardMenu from '../../components/CardMenu';
+import StatusCount from '../../components/StatusCount';
 
 const Dashboard = () => {
+  const navigation = useNavigation();
+
+  const onLogout = () => {
+    AsyncStorage.removeItem('token').then(() =>
+      navigation.reset({index: 0, routes: [{name: 'SignIn'}]}),
+    );
+  };
+
   return (
     <ScrollView style={styles.wrapper}>
       <View style={styles.redBox}>
@@ -18,7 +28,10 @@ const Dashboard = () => {
             <Text style={styles.subTitle}>Selasa, 27 September</Text>
             <Text style={styles.title}>PKKMB 2022</Text>
           </View>
-          <TouchableOpacity activeOpacity={0.7} style={styles.button}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.button}
+            onPress={onLogout}>
             <Text style={styles.buttonText}>Logout</Text>
           </TouchableOpacity>
         </View>
@@ -83,6 +96,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: 'Montserrat-Bold',
+    color: 'black',
   },
   statusCountWrapper: {
     marginTop: 48,

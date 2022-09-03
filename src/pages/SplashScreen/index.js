@@ -1,10 +1,20 @@
 import {StyleSheet, Image, View} from 'react-native';
 import React, {useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {getData} from '../../utils';
 
-const SplashScreen = ({navigation}) => {
+const SplashScreen = () => {
+  const navigation = useNavigation();
+
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('SignIn');
+      getData('token').then(r => {
+        if (r) {
+          navigation.reset({index: 0, routes: [{name: 'Dashboard'}]});
+        } else {
+          navigation.replace('SignIn');
+        }
+      });
     }, 1000);
   });
 

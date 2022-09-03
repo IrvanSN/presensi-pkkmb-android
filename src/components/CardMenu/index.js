@@ -50,7 +50,9 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   title: {
+    marginTop: 7,
     fontFamily: 'Montserrat-Medium',
     fontSize: 12,
+    color: 'black',
   },
 });

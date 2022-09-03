@@ -1,4 +1,4 @@
-package com.presensipkkmb.newarchitecture.components;
+package com.coder.presensipkkmb.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

@@ -1,4 +1,4 @@
-package com.presensipkkmb.newarchitecture.modules;
+package com.coder.presensipkkmb.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;
