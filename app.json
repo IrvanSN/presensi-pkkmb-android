@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "presensipkkmb",
+    "name": "Presensi PKKMB Dewangkara Maetala 2022",
     "slug": "presensipkkmb",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,6 +21,8 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.coder.presensipkkmb",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/icon-app/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

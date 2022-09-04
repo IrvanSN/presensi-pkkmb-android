@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   header: {
     height: 100,
     paddingHorizontal: 34,
-    paddingTop: 25,
+    marginTop: 30,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
