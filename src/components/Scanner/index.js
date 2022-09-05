@@ -1,5 +1,6 @@
 import {
   Dimensions,
+  Linking,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,8 +14,10 @@ import {ChevronLeft, ChevronRight} from '../../assets/icon';
 import {API_HOST} from '../../config';
 import Axios from 'axios';
 import Loading from '../Loading';
+import {useNavigation} from '@react-navigation/native';
 
 const ScanIn = props => {
+  const navigation = useNavigation();
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +51,7 @@ const ScanIn = props => {
         .then(r => {
           setIsLoading(false);
           showToast(
-            `Absensi Masuk, ${r.data.data.student.name} berhasil!`,
+            `Absensi Datang, ${r.data.data.student.name} berhasil!`,
             'success',
           );
         })
@@ -81,9 +84,9 @@ const ScanIn = props => {
     return null;
   }
   if (hasPermission === false) {
-    return null;
+    Linking.openSettings();
+    return navigation.reset({index: 0, routes: [{name: 'Dashboard'}]});
   }
-
   if (!fontsLoaded) {
     return null;
   }
@@ -98,7 +101,7 @@ const ScanIn = props => {
           <View style={styles.headerText}>
             <Text style={styles.subTitleText}>Selasa, 27 September</Text>
             <Text style={styles.titleText}>
-              {props.type === 'scannerIn' ? 'Absensi Masuk' : 'Absensi Pulang'}
+              {props.type === 'scannerIn' ? 'Absensi Datang' : 'Absensi Pulang'}
             </Text>
           </View>
           <TouchableOpacity activeOpacity={0.7} style={styles.circleChevron}>
@@ -168,6 +171,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   scannerBox: {
+    justifyContent: 'center',
     backgroundColor: 'white',
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height - 200,

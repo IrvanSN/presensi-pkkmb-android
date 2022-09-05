@@ -52,6 +52,7 @@ export default function SignIn() {
             value={username}
             onChangeText={value => setUsername(value)}
           />
+          <View style={{marginTop: 7}} />
           <TextInputComponent
             placeholder="Masukkan password"
             isPasswordInput={true}

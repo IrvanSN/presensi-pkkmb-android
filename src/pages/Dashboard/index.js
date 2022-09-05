@@ -62,8 +62,16 @@ const Dashboard = () => {
           type="pulang"
           onPress={() => navigation.navigate('ScanOut')}
         />
-        <CardMenu title="Manual" type="manual" />
-        <CardMenu title="Data Maba" type="data-maba" />
+        <CardMenu
+          title="Manual"
+          type="manual"
+          onPress={() => navigation.navigate('Manual')}
+        />
+        <CardMenu
+          title="Data Maba"
+          type="data-maba"
+          onPress={() => navigation.navigate('UserData')}
+        />
         <CardMenu title="Add User" type="create-user" />
         <CardMenu title="Histori" type="histori" />
       </View>

@@ -41,9 +41,9 @@ export default TextInputComponent;
 
 const styles = StyleSheet.create({
   wrapper: {
+    backgroundColor: 'white',
     flex: 1,
     flexDirection: 'row',
-    marginTop: 7,
     borderColor: '#DADADA',
     borderWidth: 1,
     borderRadius: 10,
