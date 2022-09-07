@@ -8,18 +8,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import CardMenu from '../../components/CardMenu';
-import StatusCount from '../../components/StatusCount';
+import {CardMenu, StatusCount} from '../../components';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 const Dashboard = () => {
   const navigation = useNavigation();
   const [fontsLoaded] = useFonts({
-    'Montserrat-SemiBold': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
-    'Montserrat-ExtraBold': require('../../assets/fonts/Montserrat-ExtraBold.ttf'),
+    'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
+    'Montserrat-SemiBold': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
     'Montserrat-Bold': require('../../assets/fonts/Montserrat-Bold.ttf'),
+    'Montserrat-ExtraBold': require('../../assets/fonts/Montserrat-ExtraBold.ttf'),
   });
 
   useEffect(() => {

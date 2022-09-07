@@ -7,6 +7,7 @@ import TextInputComponent from './TextInputComponent';
 import NavigatorTab from './NavigatorTab';
 import ManualCard from './ManualCard';
 import UserCard from './UserCard';
+import SearchButton from './SearchButton';
 
 export {
   Scanner,
@@ -18,4 +19,5 @@ export {
   NavigatorTab,
   ManualCard,
   UserCard,
+  SearchButton,
 };

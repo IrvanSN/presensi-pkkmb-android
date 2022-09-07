@@ -1,7 +1,11 @@
 import React, {useCallback, useEffect} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {NavigatorTab, TextInputComponent, UserCard} from '../../components';
-import SearchButton from '../../components/SearchButton';
+import {
+  NavigatorTab,
+  SearchButton,
+  TextInputComponent,
+  UserCard,
+} from '../../components';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -11,6 +15,7 @@ const UserData = () => {
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
     'Montserrat-SemiBold': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
     'Montserrat-Bold': require('../../assets/fonts/Montserrat-Bold.ttf'),
+    'Montserrat-ExtraBold': require('../../assets/fonts/Montserrat-ExtraBold.ttf'),
   });
 
   useEffect(() => {

@@ -1,8 +1,11 @@
 import React, {useCallback, useEffect} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {NavigatorTab, TextInputComponent} from '../../components';
-import SearchButton from '../../components/SearchButton';
-import ManualCard from '../../components/ManualCard';
+import {
+  ManualCard,
+  NavigatorTab,
+  SearchButton,
+  TextInputComponent,
+} from '../../components';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 

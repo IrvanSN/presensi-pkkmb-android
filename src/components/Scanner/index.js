@@ -7,25 +7,19 @@ import {
   View,
 } from 'react-native';
 import {showToast} from '../../utils';
-import React, {useCallback, useEffect, useState} from 'react';
-import {useFonts} from 'expo-font';
+import React, {useEffect, useState} from 'react';
 import {BarCodeScanner} from 'expo-barcode-scanner';
 import {ChevronLeft, ChevronRight} from '../../assets/icon';
 import {API_HOST} from '../../config';
 import Axios from 'axios';
 import Loading from '../Loading';
 import {useNavigation} from '@react-navigation/native';
-import * as SplashScreen from 'expo-splash-screen';
 
 const ScanIn = props => {
   const navigation = useNavigation();
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [fontsLoaded] = useFonts({
-    'Montserrat-SemiBold': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
-    'Montserrat-Bold': require('../../assets/fonts/Montserrat-Bold.ttf'),
-  });
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -35,24 +29,6 @@ const ScanIn = props => {
 
     getBarCodeScannerPermissions();
   }, []);
-
-  useEffect(() => {
-    async function prepare() {
-      await SplashScreen.preventAutoHideAsync();
-    }
-
-    prepare();
-  }, [fontsLoaded]);
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   const handleBarCodeScanned = ({data}) => {
     setScanned(true);
@@ -106,13 +82,10 @@ const ScanIn = props => {
     Linking.openSettings();
     return navigation.reset({index: 0, routes: [{name: 'Dashboard'}]});
   }
-  if (!fontsLoaded) {
-    return null;
-  }
 
   return (
     <>
-      <View style={styles.wrapper} onLayout={onLayoutRootView}>
+      <View style={styles.wrapper}>
         <View style={styles.header}>
           <TouchableOpacity activeOpacity={0.7} style={styles.circleChevron}>
             <ChevronLeft />

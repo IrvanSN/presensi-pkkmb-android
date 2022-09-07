@@ -1,15 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {useFonts} from 'expo-font';
 
 const ActionButton = props => {
-  const [fontsLoaded] = useFonts({
-    'Montserrat-SemiBold': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity
