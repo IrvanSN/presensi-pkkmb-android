@@ -1,19 +1,11 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {ChevronLeftNavigator} from '../../assets/icon';
-import {useFonts} from 'expo-font';
 import {useNavigation} from '@react-navigation/native';
 
 const NavigatorTab = ({navigateTo, date, title}) => {
   const navigation = useNavigation();
-  const [fontsLoaded] = useFonts({
-    'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
-    'Montserrat-Bold': require('../../assets/fonts/Montserrat-Bold.ttf'),
-  });
 
-  if (!fontsLoaded) {
-    return null;
-  }
   return (
     <View>
       <View style={styles.navigatorTab}>

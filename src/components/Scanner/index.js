@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import {showToast} from '../../utils';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useFonts} from 'expo-font';
 import {BarCodeScanner} from 'expo-barcode-scanner';
 import {ChevronLeft, ChevronRight} from '../../assets/icon';
@@ -15,6 +15,7 @@ import {API_HOST} from '../../config';
 import Axios from 'axios';
 import Loading from '../Loading';
 import {useNavigation} from '@react-navigation/native';
+import * as SplashScreen from 'expo-splash-screen';
 
 const ScanIn = props => {
   const navigation = useNavigation();
@@ -34,6 +35,24 @@ const ScanIn = props => {
 
     getBarCodeScannerPermissions();
   }, []);
+
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+
+    prepare();
+  }, [fontsLoaded]);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const handleBarCodeScanned = ({data}) => {
     setScanned(true);
@@ -93,7 +112,7 @@ const ScanIn = props => {
 
   return (
     <>
-      <View style={styles.wrapper}>
+      <View style={styles.wrapper} onLayout={onLayoutRootView}>
         <View style={styles.header}>
           <TouchableOpacity activeOpacity={0.7} style={styles.circleChevron}>
             <ChevronLeft />

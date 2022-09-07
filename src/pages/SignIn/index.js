@@ -5,7 +5,7 @@ import React, {useState} from 'react';
 import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import ActionButton from '../../components/ActionButton';
 import Loading from '../../components/Loading';
-import TextInputComponent from '../../components/TextInputComponent';
+import TextInputComponent from '../../components/TextInputComponent/';
 import {showToast, storeData} from '../../utils';
 
 export default function SignIn() {
@@ -22,7 +22,7 @@ export default function SignIn() {
     };
 
     if (username && password) {
-      Axios.post(`${API_HOST.url}/kafas/signin`, data)
+      Axios.post(`${API_HOST.url}/auth`, data)
         .then(r => {
           storeData('token', {value: r.data.data.token});
           setIsLoading(false);

@@ -1,16 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {useFonts} from 'expo-font';
 
 const UserCard = ({groupName, memberCount}) => {
-  const [fontsLoaded] = useFonts({
-    'Montserrat-SemiBold': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
-    'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
   return (
     <View style={styles.wrapper}>
       <View>

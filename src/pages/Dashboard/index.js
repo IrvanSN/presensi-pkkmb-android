@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -11,13 +11,30 @@ import {
 import CardMenu from '../../components/CardMenu';
 import StatusCount from '../../components/StatusCount';
 import {useFonts} from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 const Dashboard = () => {
   const navigation = useNavigation();
   const [fontsLoaded] = useFonts({
+    'Montserrat-SemiBold': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
+    'Montserrat-ExtraBold': require('../../assets/fonts/Montserrat-ExtraBold.ttf'),
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
     'Montserrat-Bold': require('../../assets/fonts/Montserrat-Bold.ttf'),
   });
+
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+
+    prepare();
+  }, [fontsLoaded]);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
 
   if (!fontsLoaded) {
     return null;
@@ -31,7 +48,7 @@ const Dashboard = () => {
 
   return (
     <ScrollView style={styles.wrapper}>
-      <View style={styles.redBox}>
+      <View style={styles.redBox} onLayout={onLayoutRootView}>
         <View style={styles.header}>
           <View style={styles.titleWrapper}>
             <Text style={styles.subTitle}>Selasa, 27 September</Text>

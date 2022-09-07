@@ -1,11 +1,37 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {NavigatorTab, TextInputComponent, UserCard} from '../../components';
 import SearchButton from '../../components/SearchButton';
+import {useFonts} from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 const UserData = () => {
+  const [fontsLoaded] = useFonts({
+    'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
+    'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
+    'Montserrat-SemiBold': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
+    'Montserrat-Bold': require('../../assets/fonts/Montserrat-Bold.ttf'),
+  });
+
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+
+    prepare();
+  }, [fontsLoaded]);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
-    <View style={styles.wrapper}>
+    <View style={styles.wrapper} onLayout={onLayoutRootView}>
       <View style={styles.navigatorWrapper}>
         <NavigatorTab
           date="Selasa, 27 September"
@@ -23,23 +49,23 @@ const UserData = () => {
       </View>
       <ScrollView style={styles.collectionWrapper}>
         <UserCard groupName="1. SOETOMO" memberCount={35} />
-        <View style={{marginTop: 28}} />
+        <View style={styles.gap} />
         <UserCard groupName="2. SOEKARNO" memberCount={41} />
-        <View style={{marginTop: 28}} />
+        <View style={styles.gap} />
         <UserCard groupName="3. MOH. HATTA" memberCount={42} />
-        <View style={{marginTop: 28}} />
+        <View style={styles.gap} />
         <UserCard groupName="4. AGOES SALIM" memberCount={30} />
-        <View style={{marginTop: 28}} />
+        <View style={styles.gap} />
         <UserCard groupName="4. AGOES SALIM" memberCount={30} />
-        <View style={{marginTop: 28}} />
+        <View style={styles.gap} />
         <UserCard groupName="4. AGOES SALIM" memberCount={30} />
-        <View style={{marginTop: 28}} />
+        <View style={styles.gap} />
         <UserCard groupName="4. AGOES SALIM" memberCount={30} />
-        <View style={{marginTop: 28}} />
+        <View style={styles.gap} />
         <UserCard groupName="4. AGOES SALIM" memberCount={30} />
-        <View style={{marginTop: 28}} />
+        <View style={styles.gap} />
         <UserCard groupName="4. AGOES SALIM" memberCount={30} />
-        <View style={{marginTop: 28}} />
+        <View style={styles.gap} />
       </ScrollView>
     </View>
   );
@@ -60,10 +86,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     height: 50,
     paddingHorizontal: 15,
-    paddingBottom: 15,
+    marginBottom: 15,
   },
   collectionWrapper: {
     paddingTop: 20,
     paddingHorizontal: 15,
   },
+  gap: {marginTop: 28},
 });
