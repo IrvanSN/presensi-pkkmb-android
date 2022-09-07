@@ -49,7 +49,7 @@ export default function SignIn() {
     if (username && password) {
       Axios.post(`${API_HOST.url}/auth`, data)
         .then(r => {
-          storeData('token', {value: r.data.data.token});
+          storeData('user', r.data.data);
           setIsLoading(false);
           navigation.replace('Dashboard');
         })

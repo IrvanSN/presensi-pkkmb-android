@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -11,9 +11,11 @@ import {
 import {CardMenu, StatusCount} from '../../components';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import {getData} from '../../utils';
 
 const Dashboard = () => {
   const navigation = useNavigation();
+  const [accountType, setAccountType] = useState('');
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
@@ -25,6 +27,9 @@ const Dashboard = () => {
   useEffect(() => {
     async function prepare() {
       await SplashScreen.preventAutoHideAsync();
+      getData('user').then(r => {
+        setAccountType(r.accountType);
+      });
     }
 
     prepare();
@@ -84,12 +89,16 @@ const Dashboard = () => {
           type="manual"
           onPress={() => navigation.navigate('Manual')}
         />
-        <CardMenu
-          title="Data Maba"
-          type="data-maba"
-          onPress={() => navigation.navigate('UserData')}
-        />
-        <CardMenu title="Add User" type="create-user" />
+        {accountType === 'Master' && (
+          <CardMenu
+            title="Data Maba"
+            type="data-maba"
+            onPress={() => navigation.navigate('UserData')}
+          />
+        )}
+        {accountType === 'Master' && (
+          <CardMenu title="Add User" type="create-user" />
+        )}
         <CardMenu title="Histori" type="histori" />
       </View>
     </ScrollView>

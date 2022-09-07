@@ -16,11 +16,11 @@ const SplashScreenPage = () => {
       } catch (e) {
         console.warn(e);
       } finally {
-        getData('token').then(async r => {
+        getData('user').then(async r => {
           if (r) {
             const config = {
               headers: {
-                Authorization: 'Bearer ' + r.value,
+                Authorization: 'Bearer ' + r.token,
               },
             };
 
