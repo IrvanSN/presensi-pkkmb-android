@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -8,16 +8,39 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import CardMenu from '../../components/CardMenu';
-import StatusCount from '../../components/StatusCount';
+import {CardMenu, StatusCount} from '../../components';
 import {useFonts} from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import {getData} from '../../utils';
 
 const Dashboard = () => {
   const navigation = useNavigation();
+  const [accountType, setAccountType] = useState('');
   const [fontsLoaded] = useFonts({
+    'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
+    'Montserrat-SemiBold': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
     'Montserrat-Bold': require('../../assets/fonts/Montserrat-Bold.ttf'),
+    'Montserrat-ExtraBold': require('../../assets/fonts/Montserrat-ExtraBold.ttf'),
   });
+
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+
+    prepare();
+  }, [fontsLoaded]);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      getData('user').then(r => {
+        setAccountType(r.accountType);
+      });
+
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
 
   if (!fontsLoaded) {
     return null;
@@ -31,7 +54,7 @@ const Dashboard = () => {
 
   return (
     <ScrollView style={styles.wrapper}>
-      <View style={styles.redBox}>
+      <View style={styles.redBox} onLayout={onLayoutRootView}>
         <View style={styles.header}>
           <View style={styles.titleWrapper}>
             <Text style={styles.subTitle}>Selasa, 27 September</Text>
@@ -65,15 +88,31 @@ const Dashboard = () => {
         <CardMenu
           title="Manual"
           type="manual"
-          onPress={() => navigation.navigate('Manual')}
+          onPress={() =>
+            navigation.navigate('Manual', {
+              attendanceId: '6319d55667d4c77addb3a068',
+            })
+          }
         />
+        {accountType === 'Master' && (
+          <CardMenu
+            title="Data Maba"
+            type="data-maba"
+            onPress={() => navigation.navigate('UserData')}
+          />
+        )}
+        {accountType === 'Master' && (
+          <CardMenu
+            title="Add User"
+            type="create-user"
+            onPress={() => navigation.navigate('AddUser')}
+          />
+        )}
         <CardMenu
-          title="Data Maba"
-          type="data-maba"
-          onPress={() => navigation.navigate('UserData')}
+          title="Histori"
+          type="histori"
+          onPress={() => navigation.navigate('History')}
         />
-        <CardMenu title="Add User" type="create-user" />
-        <CardMenu title="Histori" type="histori" />
       </View>
     </ScrollView>
   );
