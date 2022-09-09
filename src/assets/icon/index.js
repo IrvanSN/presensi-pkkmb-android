@@ -214,6 +214,36 @@ const Lock = props => (
     />
   </Svg>
 );
+const ChevronBottom = props => (
+  <Svg
+    width={7}
+    height={4}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M3.5 2.882 6.152.275a.399.399 0 1 1 .559.568L3.5 4 .29.843A.399.399 0 1 1 .847.275L3.5 2.882Z"
+      fill="#fff"
+    />
+  </Svg>
+);
+const ChevronUp = props => (
+  <Svg
+    width={7}
+    height={4}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M3.5 1.118.848 3.725a.399.399 0 1 1-.559-.568L3.5 0l3.21 3.157a.399.399 0 1 1-.559.568L3.501 1.118Z"
+      fill="#fff"
+    />
+  </Svg>
+);
 
 export {
   Lock,
@@ -228,4 +258,6 @@ export {
   ChevronLeft,
   ChevronRight,
   ChevronLeftNavigator,
+  ChevronBottom,
+  ChevronUp,
 };

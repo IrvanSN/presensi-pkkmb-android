@@ -1,19 +1,114 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {ChevronBottom, ChevronUp} from '../../assets/icon';
+import Axios from 'axios';
+import {API_HOST} from '../../config';
+import {showToast} from '../../utils';
 
-const ManualCard = ({name, groupName, vaccineCount}) => {
+const ManualCard = ({
+  name,
+  group,
+  vaccineCount,
+  studentId,
+  kafasId,
+  attendanceId,
+  transaction,
+  attendanceType,
+}) => {
+  const [showItemDropdown, setShowItemDropdown] = useState(false);
+  const [status, setStatus] = useState(
+    transaction !== undefined ? transaction.status : '',
+  );
+
+  const onChangeStatus = changedStatus => {
+    setShowItemDropdown(false);
+    setStatus(changedStatus);
+    const data = {
+      studentId,
+      attendanceId,
+      kafasId,
+      status: changedStatus,
+    };
+    Axios.post(`${API_HOST.url}/transaction/in`, data)
+      .then(r => {
+        showToast('Berhasil mengubah status ', 'success');
+      })
+      .catch(e => showToast('anu', 'danger'));
+  };
+
   return (
     <View style={styles.wrapper}>
       <View>
         <Text style={styles.nameText}>{name}</Text>
-        <Text style={styles.descriptionText}>Kelompok {groupName}</Text>
+        <Text style={styles.descriptionText}>{group}</Text>
         <Text style={styles.descriptionText}>
-          Telah Melakukan vaksin ke-{vaccineCount}
+          Telah melakukan vaksin ke-{vaccineCount}
         </Text>
       </View>
-      <TouchableOpacity style={styles.button} activeOpacity={0.7}>
-        <Text style={styles.statusText}>Status</Text>
-      </TouchableOpacity>
+      <View style={{flexDirection: 'column'}}>
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#BC011E',
+            width: 77,
+            height: 26,
+            borderRadius: 10,
+            borderBottomRightRadius: showItemDropdown ? 0 : 10,
+            borderBottomLeftRadius: showItemDropdown ? 0 : 10,
+          }}
+          activeOpacity={0.7}
+          onPress={() => setShowItemDropdown(!showItemDropdown)}>
+          <Text style={styles.statusText}>
+            {status === '' ? 'Status' : `${status}`}
+          </Text>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginLeft: 4,
+            }}>
+            {showItemDropdown ? <ChevronUp /> : <ChevronBottom />}
+          </View>
+        </TouchableOpacity>
+        {showItemDropdown && (
+          <View style={styles.dropdownItem}>
+            {status !== 'Hadir' && (
+              <TouchableOpacity
+                style={styles.button}
+                activeOpacity={0.7}
+                onPress={() => onChangeStatus('Hadir')}>
+                <Text style={styles.statusText}>Hadir</Text>
+              </TouchableOpacity>
+            )}
+            {status !== 'Izin' && (
+              <TouchableOpacity
+                style={styles.button}
+                activeOpacity={0.7}
+                onPress={() => onChangeStatus('Izin')}>
+                <Text style={styles.statusText}>Izin</Text>
+              </TouchableOpacity>
+            )}
+            {status !== 'Alpa' && (
+              <TouchableOpacity
+                style={styles.button}
+                activeOpacity={0.7}
+                onPress={() => onChangeStatus('Alpa')}>
+                <Text style={styles.statusText}>Alpa</Text>
+              </TouchableOpacity>
+            )}
+            {status !== 'Sakit' && (
+              <TouchableOpacity
+                style={styles.button}
+                activeOpacity={0.7}
+                onPress={() => onChangeStatus('Sakit')}>
+                <Text style={styles.statusText}>Sakit</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+      </View>
     </View>
   );
 };
@@ -21,10 +116,18 @@ const ManualCard = ({name, groupName, vaccineCount}) => {
 export default ManualCard;
 
 const styles = StyleSheet.create({
+  dropdownItem: {
+    // marginTop: 26,
+    // position: 'absolute',
+    backgroundColor: '#BC011E',
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
+  },
   wrapper: {
     backgroundColor: 'white',
     flexDirection: 'row',
     paddingHorizontal: 20,
+    marginHorizontal: 15,
     paddingVertical: 13,
     justifyContent: 'space-between',
     borderRadius: 10,
@@ -48,6 +151,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   button: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#BC011E',

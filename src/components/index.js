@@ -8,6 +8,7 @@ import NavigatorTab from './NavigatorTab';
 import ManualCard from './ManualCard';
 import UserCard from './UserCard';
 import SearchButton from './SearchButton';
+import BasicButton from './BasicButton';
 
 export {
   Scanner,
@@ -20,4 +21,5 @@ export {
   ManualCard,
   UserCard,
   SearchButton,
+  BasicButton,
 };

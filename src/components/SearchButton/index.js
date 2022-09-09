@@ -1,9 +1,12 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 
-const SearchButton = () => {
+const SearchButton = ({onPress}) => {
   return (
-    <TouchableOpacity style={styles.button} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={styles.button}
+      activeOpacity={0.7}
+      onPress={onPress}>
       <Text style={styles.text}>Cari</Text>
     </TouchableOpacity>
   );

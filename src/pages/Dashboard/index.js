@@ -27,9 +27,6 @@ const Dashboard = () => {
   useEffect(() => {
     async function prepare() {
       await SplashScreen.preventAutoHideAsync();
-      getData('user').then(r => {
-        setAccountType(r.accountType);
-      });
     }
 
     prepare();
@@ -37,6 +34,10 @@ const Dashboard = () => {
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
+      getData('user').then(r => {
+        setAccountType(r.accountType);
+      });
+
       await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
@@ -87,7 +88,11 @@ const Dashboard = () => {
         <CardMenu
           title="Manual"
           type="manual"
-          onPress={() => navigation.navigate('Manual')}
+          onPress={() =>
+            navigation.navigate('Manual', {
+              attendanceId: '6319d55667d4c77addb3a068',
+            })
+          }
         />
         {accountType === 'Master' && (
           <CardMenu
@@ -97,9 +102,17 @@ const Dashboard = () => {
           />
         )}
         {accountType === 'Master' && (
-          <CardMenu title="Add User" type="create-user" />
+          <CardMenu
+            title="Add User"
+            type="create-user"
+            onPress={() => navigation.navigate('AddUser')}
+          />
         )}
-        <CardMenu title="Histori" type="histori" />
+        <CardMenu
+          title="Histori"
+          type="histori"
+          onPress={() => navigation.navigate('History')}
+        />
       </View>
     </ScrollView>
   );
