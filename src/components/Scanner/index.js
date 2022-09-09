@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import {showToast} from '../../utils';
 import React, {useEffect, useState} from 'react';
-import {useFonts} from 'expo-font';
 import {BarCodeScanner} from 'expo-barcode-scanner';
 import {ChevronLeft, ChevronRight} from '../../assets/icon';
 import {API_HOST} from '../../config';
@@ -21,10 +20,6 @@ const ScanIn = props => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [fontsLoaded] = useFonts({
-    'Montserrat-SemiBold': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
-    'Montserrat-Bold': require('../../assets/fonts/Montserrat-Bold.ttf'),
-  });
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -86,9 +81,6 @@ const ScanIn = props => {
   if (hasPermission === false) {
     Linking.openSettings();
     return navigation.reset({index: 0, routes: [{name: 'Dashboard'}]});
-  }
-  if (!fontsLoaded) {
-    return null;
   }
 
   return (

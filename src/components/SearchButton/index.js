@@ -1,17 +1,12 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {useFonts} from 'expo-font';
 
-const SearchButton = () => {
-  const [fontsLoaded] = useFonts({
-    'Montserrat-SemiBold': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
+const SearchButton = ({onPress}) => {
   return (
-    <TouchableOpacity style={styles.button} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={styles.button}
+      activeOpacity={0.7}
+      onPress={onPress}>
       <Text style={styles.text}>Cari</Text>
     </TouchableOpacity>
   );

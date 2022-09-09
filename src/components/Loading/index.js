@@ -1,15 +1,7 @@
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {useFonts} from 'expo-font';
 
 const Loading = () => {
-  const [fontsLoaded] = useFonts({
-    'Montserrat-SemiBold': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
   return (
     <View style={styles.wrapper}>
       <View style={styles.box}>

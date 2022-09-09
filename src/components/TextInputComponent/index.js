@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, TextInput, TouchableOpacity, View} from 'react-native';
 import {Eye, EyeSlash, Lock, User} from '../../assets/icon';
-import {useFonts} from 'expo-font';
 
 const TextInputComponent = ({
   type,
@@ -11,13 +10,6 @@ const TextInputComponent = ({
 }) => {
   const [isHiddenPassword, setIsHiddenPassword] = useState(true);
   const onPressed = () => setIsHiddenPassword(!isHiddenPassword);
-  const [fontsLoaded] = useFonts({
-    'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   return (
     <View style={styles.wrapper}>

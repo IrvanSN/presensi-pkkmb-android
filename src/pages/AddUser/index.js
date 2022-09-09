@@ -1,11 +1,9 @@
 import React, {useCallback, useEffect} from 'react';
-import {Scanner} from '../../components';
-import {StatusBar} from 'expo-status-bar';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import {StyleSheet, View} from 'react-native';
+import {Text, View} from 'react-native';
 
-const ScanIn = () => {
+const AddUser = () => {
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
@@ -33,17 +31,10 @@ const ScanIn = () => {
   }
 
   return (
-    <View style={styles.wrapper} onLayout={onLayoutRootView}>
-      <Scanner type="scannerOut" />
-      <StatusBar hidden={true} />
+    <View onLayout={onLayoutRootView}>
+      <Text>Hello</Text>
     </View>
   );
 };
 
-export default ScanIn;
-
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-  },
-});
+export default AddUser;

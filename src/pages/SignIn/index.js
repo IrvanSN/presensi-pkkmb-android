@@ -1,18 +1,43 @@
 import {useNavigation} from '@react-navigation/native';
 import {API_HOST} from '../../config';
 import Axios from 'axios';
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Image, ScrollView, StyleSheet, View} from 'react-native';
-import ActionButton from '../../components/ActionButton';
-import Loading from '../../components/Loading';
-import TextInputComponent from '../../components/TextInputComponent';
+import {ActionButton, Loading, TextInputComponent} from '../../components';
 import {showToast, storeData} from '../../utils';
+import {useFonts} from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 export default function SignIn() {
   const navigation = useNavigation();
   const [username, setUsername] = useState('johndoe');
   const [password, setPassword] = useState('123hore');
   const [isLoading, setIsLoading] = useState(false);
+  const [fontsLoaded] = useFonts({
+    'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
+    'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
+    'Montserrat-SemiBold': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
+    'Montserrat-Bold': require('../../assets/fonts/Montserrat-Bold.ttf'),
+    'Montserrat-ExtraBold': require('../../assets/fonts/Montserrat-ExtraBold.ttf'),
+  });
+
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+
+    prepare();
+  }, [fontsLoaded]);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const onSubmit = () => {
     setIsLoading(true);
@@ -22,9 +47,9 @@ export default function SignIn() {
     };
 
     if (username && password) {
-      Axios.post(`${API_HOST.url}/kafas/signin`, data)
+      Axios.post(`${API_HOST.url}/auth`, data)
         .then(r => {
-          storeData('token', {value: r.data.data.token});
+          storeData('user', r.data.data);
           setIsLoading(false);
           navigation.replace('Dashboard');
         })
@@ -36,7 +61,7 @@ export default function SignIn() {
   };
 
   return (
-    <>
+    <View style={styles.wrapper} onLayout={onLayoutRootView}>
       <ScrollView style={styles.scrollViewStyles}>
         <View style={styles.wrapperImage}>
           <Image
@@ -64,11 +89,14 @@ export default function SignIn() {
         </View>
       </ScrollView>
       {isLoading && <Loading />}
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+  },
   scrollViewStyles: {
     paddingTop: 30,
     backgroundColor: '#F5F5F5',

@@ -1,7 +1,9 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {
+  AddUser,
   Dashboard,
+  History,
   Manual,
   ScanIn,
   ScanOut,
@@ -48,6 +50,16 @@ const Router = () => {
       <Stack.Screen
         name="UserData"
         component={UserData}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AddUser"
+        component={AddUser}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="History"
+        component={History}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
