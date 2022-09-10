@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect} from 'react';
 import {useFonts} from 'expo-font';
+import {NavigatorTab} from '../../components';
 import * as SplashScreen from 'expo-splash-screen';
-import {Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 const History = () => {
   const [fontsLoaded] = useFonts({
@@ -31,10 +32,28 @@ const History = () => {
   }
 
   return (
-    <View onLayout={onLayoutRootView}>
-      <Text>Hello</Text>
-    </View>
+    <>
+      <View style={styles.wrapper} onLayout={onLayoutRootView}>
+        <View style={styles.navigatorWrapper}>
+          <NavigatorTab
+            date="Selasa, 27 September"
+            title="Presensi Manual"
+            navigateTo="Dashboard"
+          />
+        </View>
+      </View>
+    </>
   );
 };
 
 export default History;
+
+const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    paddingTop: 50,
+  },
+  navigatorWrapper: {
+    paddingHorizontal: 15,
+  },
+});
