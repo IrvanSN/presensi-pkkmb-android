@@ -3,7 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {ChevronLeftNavigator} from '../../assets/icon';
 import {useNavigation} from '@react-navigation/native';
 
-const NavigatorTab = ({navigateTo, date, title}) => {
+const NavigatorTab = ({date, title}) => {
   const navigation = useNavigation();
 
   return (
@@ -12,12 +12,7 @@ const NavigatorTab = ({navigateTo, date, title}) => {
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.circleChevron}
-          onPress={() =>
-            navigation.reset({
-              index: 0,
-              routes: [{name: `${navigateTo}`}],
-            })
-          }>
+          onPress={() => navigation.goBack()}>
           <ChevronLeftNavigator />
         </TouchableOpacity>
         <View style={styles.header}>

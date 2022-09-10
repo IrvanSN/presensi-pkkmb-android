@@ -3,7 +3,7 @@ import Dashboard from './Dashboard';
 import ScanIn from './ScanIn';
 import ScanOut from './ScanOut';
 import Manual from './Manual';
-import UserData from './UserData';
+import UserGroupData from './UserGroupData';
 import SplashScreenPage from './SplashScreenPage';
 import AddUser from './AddUser';
 import History from './History';
@@ -14,7 +14,7 @@ export {
   ScanIn,
   ScanOut,
   Manual,
-  UserData,
+  UserGroupData,
   SplashScreenPage,
   AddUser,
   History,

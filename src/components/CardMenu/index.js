@@ -8,26 +8,26 @@ import {
 } from '../../assets/icon';
 import React from 'react';
 
-const CardMenu = props => {
+const CardMenu = ({onPress, type, title}) => {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
       style={styles.wrapper}
-      onPress={props.onPress}>
-      {props.type === 'datang' || props.type === 'pulang' ? (
+      onPress={onPress}>
+      {type === 'datang' || type === 'pulang' ? (
         <QR />
-      ) : props.type === 'manual' ? (
+      ) : type === 'manual' ? (
         <UserChecklist />
-      ) : props.type === 'data-maba' ? (
+      ) : type === 'data-maba' ? (
         <Clip />
-      ) : props.type === 'create-user' ? (
+      ) : type === 'create-user' ? (
         <SquarePlus />
-      ) : props.type === 'histori' ? (
+      ) : type === 'histori' ? (
         <BackwardClock />
       ) : (
         <QR />
       )}
-      <Text style={styles.title}>{props.title}</Text>
+      <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
   );
 };
