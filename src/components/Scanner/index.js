@@ -193,14 +193,14 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   buttonReScanDisabled: {
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: 'white',
     width: 130,
     height: 45,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
     borderWidth: 2,
-    borderColor: '#BC011E',
+    borderColor: '#87898E',
     marginBottom: 30,
   },
   reScanText: {
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-SemiBold',
   },
   reScanTextDisabled: {
-    color: 'black',
+    color: '#87898E',
     fontFamily: 'Montserrat-SemiBold',
   },
 });

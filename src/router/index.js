@@ -9,7 +9,7 @@ import {
   ScanOut,
   SignIn,
   SplashScreenPage,
-  UserData,
+  UserGroupData,
 } from '../pages';
 
 const Stack = createStackNavigator();
@@ -49,7 +49,7 @@ const Router = () => {
       />
       <Stack.Screen
         name="UserData"
-        component={UserData}
+        component={UserGroupData}
         options={{headerShown: false}}
       />
       <Stack.Screen

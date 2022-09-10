@@ -16,8 +16,8 @@ export default Loading;
 
 const styles = StyleSheet.create({
   wrapper: {
-    position: 'absolute',
     flex: 1,
+    position: 'absolute',
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
     width: '100%',
     height: '100%',
