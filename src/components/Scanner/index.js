@@ -15,7 +15,7 @@ import Axios from 'axios';
 import Loading from '../Loading';
 import {useNavigation} from '@react-navigation/native';
 
-const ScanIn = props => {
+const ScanIn = ({type, attendanceId, accountId}) => {
   const navigation = useNavigation();
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
@@ -34,11 +34,11 @@ const ScanIn = props => {
     setScanned(true);
     setIsLoading(true);
 
-    if (props.type === 'scannerIn') {
+    if (type === 'scannerIn') {
       const payload = {
         studentId: data,
-        attendanceId: '6305d50b6f4a82e0e52e9204',
-        kafasId: '6305c468d641cbbb23f5d511',
+        attendanceId,
+        assigneeId: accountId,
         status: 'Hadir',
       };
 
@@ -57,7 +57,7 @@ const ScanIn = props => {
     } else {
       const payload = {
         studentId: data,
-        attendanceId: '6305d50b6f4a82e0e52e9204',
+        attendanceId,
       };
 
       Axios.put(`${API_HOST.url}/transaction/out`, payload)
@@ -93,7 +93,7 @@ const ScanIn = props => {
           <View style={styles.headerText}>
             <Text style={styles.subTitleText}>Selasa, 27 September</Text>
             <Text style={styles.titleText}>
-              {props.type === 'scannerIn' ? 'Absensi Datang' : 'Absensi Pulang'}
+              {type === 'scannerIn' ? 'Absensi Datang' : 'Absensi Pulang'}
             </Text>
           </View>
           <TouchableOpacity activeOpacity={0.7} style={styles.circleChevron}>

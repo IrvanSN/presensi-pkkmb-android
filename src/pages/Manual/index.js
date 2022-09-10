@@ -118,12 +118,18 @@ const Manual = ({route}) => {
           <BasicButton
             text="Datang"
             isActive={attendanceType === 'Datang'}
-            onPress={() => setAttendanceType('Datang')}
+            onPress={() => {
+              setAttendanceType('Datang');
+              setData([]);
+            }}
           />
           <BasicButton
             text="Pulang"
             isActive={attendanceType === 'Pulang'}
-            onPress={() => setAttendanceType('Pulang')}
+            onPress={() => {
+              setAttendanceType('Pulang');
+              setData([]);
+            }}
           />
         </View>
         <ScrollView style={styles.collectionWrapper}>
@@ -134,7 +140,7 @@ const Manual = ({route}) => {
                 group={item.student.group}
                 vaccineCount={item.student.vaccine.count}
                 studentId={item.student._id}
-                kafasId={user._id}
+                assigneeId={user._id}
                 attendanceId={attendanceId}
                 transaction={item.transaction[0]}
                 attendanceType={attendanceType}

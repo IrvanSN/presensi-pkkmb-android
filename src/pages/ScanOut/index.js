@@ -5,7 +5,8 @@ import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {StyleSheet, View} from 'react-native';
 
-const ScanIn = () => {
+const ScanIn = ({route}) => {
+  const {attendanceId, accountId} = route.params;
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
@@ -34,7 +35,11 @@ const ScanIn = () => {
 
   return (
     <View style={styles.wrapper} onLayout={onLayoutRootView}>
-      <Scanner type="scannerOut" />
+      <Scanner
+        type="scannerOut"
+        attendanceId={attendanceId}
+        accountId={accountId}
+      />
       <StatusBar hidden={true} />
     </View>
   );

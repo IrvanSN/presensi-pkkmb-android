@@ -10,7 +10,6 @@ import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 const UserData = () => {
-  const [data, setData] = useState([]);
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),

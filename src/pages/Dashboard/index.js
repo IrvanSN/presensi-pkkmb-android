@@ -16,6 +16,7 @@ import {getData} from '../../utils';
 const Dashboard = () => {
   const navigation = useNavigation();
   const [accountType, setAccountType] = useState('');
+  const [accountData, setAccountData] = useState({});
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
@@ -36,6 +37,7 @@ const Dashboard = () => {
     if (fontsLoaded) {
       getData('user').then(r => {
         setAccountType(r.accountType);
+        setAccountData(r);
       });
 
       await SplashScreen.hideAsync();
@@ -47,7 +49,7 @@ const Dashboard = () => {
   }
 
   const onLogout = () => {
-    AsyncStorage.removeItem('token').then(() =>
+    AsyncStorage.removeItem('user').then(() =>
       navigation.reset({index: 0, routes: [{name: 'SignIn'}]}),
     );
   };
@@ -78,35 +80,46 @@ const Dashboard = () => {
         <CardMenu
           title="Datang"
           type="datang"
-          onPress={() => navigation.navigate('ScanIn')}
+          onPress={() =>
+            navigation.navigate('ScanIn', {
+              attendanceId: '631afd4c7c917dd1475bf868',
+              accountId: accountData?.user?._id,
+            })
+          }
         />
         <CardMenu
           title="Pulang"
           type="pulang"
-          onPress={() => navigation.navigate('ScanOut')}
+          onPress={() =>
+            navigation.navigate('ScanOut', {
+              attendanceId: '631afd4c7c917dd1475bf868',
+              accountId: accountData?.user?._id,
+            })
+          }
         />
         <CardMenu
           title="Manual"
           type="manual"
           onPress={() =>
             navigation.navigate('Manual', {
-              attendanceId: '6319d55667d4c77addb3a068',
+              attendanceId: '631afd4c7c917dd1475bf868',
+              accountId: accountData?.user?._id,
             })
           }
         />
         {accountType === 'Master' && (
-          <CardMenu
-            title="Data Maba"
-            type="data-maba"
-            onPress={() => navigation.navigate('UserData')}
-          />
-        )}
-        {accountType === 'Master' && (
-          <CardMenu
-            title="Add User"
-            type="create-user"
-            onPress={() => navigation.navigate('AddUser')}
-          />
+          <>
+            <CardMenu
+              title="Data Maba"
+              type="data-maba"
+              onPress={() => navigation.navigate('UserData')}
+            />
+            <CardMenu
+              title="Add User"
+              type="create-user"
+              onPress={() => navigation.navigate('AddUser')}
+            />
+          </>
         )}
         <CardMenu
           title="Histori"
