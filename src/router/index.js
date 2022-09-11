@@ -9,6 +9,7 @@ import {
   ScanOut,
   SignIn,
   SplashScreenPage,
+  UserData,
   UserGroupData,
 } from '../pages';
 
@@ -48,8 +49,13 @@ const Router = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="UserData"
+        name="UserGroupData"
         component={UserGroupData}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="UserData"
+        component={UserData}
         options={{headerShown: false}}
       />
       <Stack.Screen

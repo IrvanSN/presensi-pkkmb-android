@@ -112,7 +112,7 @@ const Dashboard = () => {
             <CardMenu
               title="Data Maba"
               type="data-maba"
-              onPress={() => navigation.navigate('UserData')}
+              onPress={() => navigation.navigate('UserGroupData')}
             />
             <CardMenu
               title="Add User"

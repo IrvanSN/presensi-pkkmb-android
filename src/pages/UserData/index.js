@@ -1,23 +1,22 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
+import {useFonts} from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 import {
   Loading,
   NavigatorTab,
   SearchButton,
   TextInputComponent,
-  UserGroupCard,
+  UserCard,
 } from '../../components';
-import {useFonts} from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
 import {showToast} from '../../utils';
-import {useNavigation} from '@react-navigation/native';
 
-const UserGroupData = () => {
-  const navigation = useNavigation();
-  const [data, setData] = useState([]);
+const UserData = ({route}) => {
+  const {groupName} = route.params;
   const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
@@ -37,10 +36,10 @@ const UserGroupData = () => {
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
       setIsLoading(true);
-      Axios.get(`${API_HOST.url}/student/count/from/group`)
+      Axios.post(`${API_HOST.url}/student/all/from/group`, {group: groupName})
         .then(r => {
-          setIsLoading(false);
           setData(r.data.data);
+          setIsLoading(false);
         })
         .catch(e => {
           setIsLoading(false);
@@ -51,7 +50,7 @@ const UserGroupData = () => {
     }
   }, [fontsLoaded]);
 
-  if (!fontsLoaded && data.length === 0) {
+  if (!fontsLoaded) {
     return null;
   }
 
@@ -61,7 +60,7 @@ const UserGroupData = () => {
         <View style={styles.navigatorWrapper}>
           <NavigatorTab
             date="Selasa, 27 September"
-            title="Data Kelompok"
+            title={groupName}
             navigateTo="Dashboard"
           />
         </View>
@@ -69,22 +68,19 @@ const UserGroupData = () => {
           <TextInputComponent
             type="username"
             isPasswordInput={false}
-            placeholder="Cari nama kelompok"
+            placeholder="Cari nama anggota"
           />
           <SearchButton />
         </View>
         <ScrollView style={styles.collectionWrapper}>
           {data.map(item => (
-            <View key={item.groupId}>
-              <UserGroupCard
-                groupName={item.groupName}
-                memberCount={item.total}
-                onPressMore={() =>
-                  navigation.navigate('UserData', {groupName: item.groupName})
-                }
-              />
-              <View style={styles.gap} />
-            </View>
+            <UserCard
+              groupName={item.group}
+              name={item.name}
+              vaccineCount={item.vaccine.count}
+              id={item._id}
+              key={item._id}
+            />
           ))}
         </ScrollView>
       </View>
@@ -93,15 +89,12 @@ const UserGroupData = () => {
   );
 };
 
-export default UserGroupData;
+export default UserData;
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     paddingTop: 50,
-  },
-  navigatorWrapper: {
-    paddingHorizontal: 15,
   },
   searchSection: {
     flexDirection: 'row',
@@ -111,7 +104,10 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   collectionWrapper: {
+    flex: 1,
     paddingTop: 5,
   },
-  gap: {marginTop: 28},
+  navigatorWrapper: {
+    paddingHorizontal: 15,
+  },
 });

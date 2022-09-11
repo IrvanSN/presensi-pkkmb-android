@@ -6,9 +6,10 @@ import StatusCount from './StatusCount';
 import TextInputComponent from './TextInputComponent';
 import NavigatorTab from './NavigatorTab';
 import ManualCard from './ManualCard';
-import UserCard from './UserCard';
+import UserGroupCard from './UserGroupCard';
 import SearchButton from './SearchButton';
 import BasicButton from './BasicButton';
+import UserCard from './UserCard';
 
 export {
   Scanner,
@@ -19,7 +20,8 @@ export {
   TextInputComponent,
   NavigatorTab,
   ManualCard,
-  UserCard,
+  UserGroupCard,
   SearchButton,
   BasicButton,
+  UserCard,
 };

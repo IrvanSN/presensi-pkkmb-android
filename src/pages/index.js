@@ -7,6 +7,7 @@ import UserGroupData from './UserGroupData';
 import SplashScreenPage from './SplashScreenPage';
 import AddUser from './AddUser';
 import History from './History';
+import UserData from './UserData';
 
 export {
   SignIn,
@@ -18,4 +19,5 @@ export {
   SplashScreenPage,
   AddUser,
   History,
+  UserData,
 };
