@@ -1,18 +1,24 @@
-import {useNavigation} from '@react-navigation/native';
-import {API_HOST} from '../../config';
-import Axios from 'axios';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Image, ScrollView, StyleSheet, View} from 'react-native';
-import {ActionButton, Loading, TextInputComponent} from '../../components';
-import {showToast, storeData} from '../../utils';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {MadeByCoder} from '../../assets/icon';
+import {useNavigation} from '@react-navigation/native';
+import {Loading} from '../../components';
+import {showToast} from '../../utils';
+import Axios from 'axios';
+import {API_HOST} from '../../config';
 
-export default function SignIn() {
+const AttendancePicker = () => {
   const navigation = useNavigation();
-  const [username, setUsername] = useState('johndoe');
-  const [password, setPassword] = useState('123hore');
+  const [dataAttendance, setDataAttendance] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
@@ -32,6 +38,16 @@ export default function SignIn() {
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
+      setIsLoading(true);
+      Axios.get(`${API_HOST.url}/attendance/all`)
+        .then(item => {
+          setDataAttendance(item.data.data);
+          setIsLoading(false);
+        })
+        .catch(e => {
+          setIsLoading(false);
+          showToast('Error from API', 'danger');
+        });
       await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
@@ -39,27 +55,6 @@ export default function SignIn() {
   if (!fontsLoaded) {
     return null;
   }
-
-  const onSubmit = () => {
-    setIsLoading(true);
-    const data = {
-      username,
-      password,
-    };
-
-    if (username && password) {
-      Axios.post(`${API_HOST.url}/auth`, data)
-        .then(r => {
-          storeData('user', r.data.data);
-          setIsLoading(false);
-          navigation.replace('AttendancePicker');
-        })
-        .catch(e => {
-          setIsLoading(false);
-          showToast(e.response.data.message, 'danger');
-        });
-    }
-  };
 
   return (
     <View style={styles.wrapper} onLayout={onLayoutRootView}>
@@ -70,23 +65,20 @@ export default function SignIn() {
             source={require('../../assets/logo/LogoVertical.png')}
           />
         </View>
-        <View style={styles.wrapperFormSignIn}>
-          <TextInputComponent
-            placeholder="Masukkan username"
-            isPasswordInput={false}
-            type="username"
-            value={username}
-            onChangeText={value => setUsername(value)}
-          />
-          <View style={{marginTop: 7}} />
-          <TextInputComponent
-            placeholder="Masukkan password"
-            isPasswordInput={true}
-            type="password"
-            value={password}
-            onChangeText={value => setPassword(value)}
-          />
-          <ActionButton onPress={onSubmit} />
+        <View style={styles.attendanceList}>
+          {dataAttendance.map(item => (
+            <TouchableOpacity
+              key={item._id}
+              activeOpacity={0.7}
+              style={styles.button}
+              onPress={() =>
+                navigation.navigate('Dashboard', {
+                  attendanceData: item,
+                })
+              }>
+              <Text style={styles.attendanceTitleText}>{item.title}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
         <View style={styles.footer}>
           <MadeByCoder />
@@ -95,15 +87,17 @@ export default function SignIn() {
       {isLoading && <Loading />}
     </View>
   );
-}
+};
+
+export default AttendancePicker;
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    backgroundColor: '#F5F5F5',
   },
   scrollViewStyles: {
     paddingTop: 30,
-    backgroundColor: '#F5F5F5',
   },
   wrapperImage: {
     alignItems: 'center',
@@ -113,9 +107,25 @@ const styles = StyleSheet.create({
     width: 173,
     height: 282,
   },
-  wrapperFormSignIn: {
-    marginTop: 57,
-    marginHorizontal: 17,
+  attendanceList: {
+    marginTop: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  attendanceTitleText: {
+    fontFamily: 'Montserrat-Regular',
+    fontSize: 12,
+  },
+  button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 215,
+    paddingVertical: 18,
+    backgroundColor: 'white',
+    borderColor: '#E6E6E6',
+    borderWidth: 1.5,
+    borderRadius: 10,
+    marginBottom: 10,
   },
   footer: {
     marginTop: 138,

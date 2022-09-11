@@ -28,17 +28,26 @@ const SplashScreenPage = () => {
               .then(async () => {
                 setAppIsReady(true);
                 await SplashScreen.hideAsync();
-                navigation.reset({index: 0, routes: [{name: 'Dashboard'}]});
+                navigation.reset({
+                  index: 0,
+                  routes: [{name: 'AttendancePicker'}],
+                });
               })
               .catch(async () => {
                 setAppIsReady(true);
                 await SplashScreen.hideAsync();
-                navigation.reset({index: 0, routes: [{name: 'SignIn'}]});
+                navigation.reset({
+                  index: 0,
+                  routes: [{name: 'SignIn'}],
+                });
               });
           } else {
             setAppIsReady(true);
             await SplashScreen.hideAsync();
-            navigation.reset({index: 0, routes: [{name: 'SignIn'}]});
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'SignIn'}],
+            });
           }
         });
       }

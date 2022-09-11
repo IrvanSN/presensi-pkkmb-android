@@ -2,6 +2,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {
   AddUser,
+  AttendancePicker,
   Dashboard,
   History,
   Manual,
@@ -26,6 +27,11 @@ const Router = () => {
       <Stack.Screen
         name="SignIn"
         component={SignIn}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AttendancePicker"
+        component={AttendancePicker}
         options={{headerShown: false}}
       />
       <Stack.Screen

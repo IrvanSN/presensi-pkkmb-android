@@ -6,7 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import {StyleSheet, View} from 'react-native';
 
 const ScanIn = ({route}) => {
-  const {attendanceId, accountId} = route.params;
+  const {attendanceData, accountData} = route.params;
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
@@ -37,8 +37,8 @@ const ScanIn = ({route}) => {
     <View style={styles.wrapper} onLayout={onLayoutRootView}>
       <Scanner
         type="scannerOut"
-        attendanceId={attendanceId}
-        accountId={accountId}
+        attendanceData={attendanceData}
+        accountId={accountData.user._id}
       />
       <StatusBar hidden={true} />
     </View>

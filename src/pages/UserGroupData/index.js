@@ -14,8 +14,9 @@ import {API_HOST} from '../../config';
 import {showToast} from '../../utils';
 import {useNavigation} from '@react-navigation/native';
 
-const UserGroupData = () => {
+const UserGroupData = ({route}) => {
   const navigation = useNavigation();
+  const {attendanceData} = route.params;
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [fontsLoaded] = useFonts({
@@ -59,11 +60,7 @@ const UserGroupData = () => {
     <>
       <View style={styles.wrapper} onLayout={onLayoutRootView}>
         <View style={styles.navigatorWrapper}>
-          <NavigatorTab
-            date="Selasa, 27 September"
-            title="Data Kelompok"
-            navigateTo="Dashboard"
-          />
+          <NavigatorTab date={attendanceData.title} title="Data Kelompok" />
         </View>
         <View style={styles.searchSection}>
           <TextInputComponent
@@ -80,7 +77,10 @@ const UserGroupData = () => {
                 groupName={item.groupName}
                 memberCount={item.total}
                 onPressMore={() =>
-                  navigation.navigate('UserData', {groupName: item.groupName})
+                  navigation.navigate('UserData', {
+                    attendanceData,
+                    groupName: item.groupName,
+                  })
                 }
               />
               <View style={styles.gap} />

@@ -8,6 +8,7 @@ import SplashScreenPage from './SplashScreenPage';
 import AddUser from './AddUser';
 import History from './History';
 import UserData from './UserData';
+import AttendancePicker from './AttendancePicker';
 
 export {
   SignIn,
@@ -20,4 +21,5 @@ export {
   AddUser,
   History,
   UserData,
+  AttendancePicker,
 };

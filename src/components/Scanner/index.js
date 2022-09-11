@@ -9,13 +9,13 @@ import {
 import {showToast} from '../../utils';
 import React, {useEffect, useState} from 'react';
 import {BarCodeScanner} from 'expo-barcode-scanner';
-import {ChevronLeft, ChevronRight} from '../../assets/icon';
 import {API_HOST} from '../../config';
 import Axios from 'axios';
 import Loading from '../Loading';
 import {useNavigation} from '@react-navigation/native';
+import {NavigatorTab} from '../index';
 
-const ScanIn = ({type, attendanceId, accountId}) => {
+const ScanIn = ({type, attendanceData, accountId}) => {
   const navigation = useNavigation();
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
@@ -37,7 +37,7 @@ const ScanIn = ({type, attendanceId, accountId}) => {
     if (type === 'scannerIn') {
       const payload = {
         studentId: data,
-        attendanceId,
+        attendanceId: attendanceData._id,
         assigneeId: accountId,
         status: 'Hadir',
       };
@@ -57,7 +57,7 @@ const ScanIn = ({type, attendanceId, accountId}) => {
     } else {
       const payload = {
         studentId: data,
-        attendanceId,
+        attendanceId: attendanceData._id,
       };
 
       Axios.put(`${API_HOST.url}/transaction/out`, payload)
@@ -87,18 +87,22 @@ const ScanIn = ({type, attendanceId, accountId}) => {
     <>
       <View style={styles.wrapper}>
         <View style={styles.header}>
-          <TouchableOpacity activeOpacity={0.7} style={styles.circleChevron}>
-            <ChevronLeft />
-          </TouchableOpacity>
-          <View style={styles.headerText}>
-            <Text style={styles.subTitleText}>Selasa, 27 September</Text>
-            <Text style={styles.titleText}>
-              {type === 'scannerIn' ? 'Absensi Datang' : 'Absensi Pulang'}
-            </Text>
-          </View>
-          <TouchableOpacity activeOpacity={0.7} style={styles.circleChevron}>
-            <ChevronRight />
-          </TouchableOpacity>
+          {/*<TouchableOpacity activeOpacity={0.7} style={styles.circleChevron}>*/}
+          {/*  <ChevronLeft />*/}
+          {/*</TouchableOpacity>*/}
+          {/*<View style={styles.headerText}>*/}
+          {/*  <Text style={styles.subTitleText}>Selasa, 27 September</Text>*/}
+          {/*  <Text style={styles.titleText}>*/}
+          {/*    {type === 'scannerIn' ? 'Absensi Datang' : 'Absensi Pulang'}*/}
+          {/*  </Text>*/}
+          {/*</View>*/}
+          {/*<TouchableOpacity activeOpacity={0.7} style={styles.circleChevron}>*/}
+          {/*  <ChevronRight />*/}
+          {/*</TouchableOpacity>*/}
+          <NavigatorTab
+            date={attendanceData.title}
+            title={type === 'scannerIn' ? 'Absensi Datang' : 'Absensi Pulang'}
+          />
         </View>
         <View style={styles.scannerBox}>
           <BarCodeScanner
@@ -137,17 +141,20 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
   },
   wrapper: {
+    paddingTop: 30,
     flex: 1,
-    backgroundColor: 'rgba(45,45,45,0.35)',
+    backgroundColor: '#F5F5F5',
   },
   header: {
-    height: 100,
-    paddingHorizontal: 34,
-    marginTop: 30,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    paddingHorizontal: 15,
+    marginBottom: 30,
+    // height: 100,
+    // paddingHorizontal: 34,
+    // marginTop: 30,
+    // flex: 1,
+    // flexDirection: 'row',
+    // justifyContent: 'space-around',
+    // alignItems: 'center',
   },
   headerText: {
     alignItems: 'center',
@@ -199,7 +206,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
-    borderWidth: 2,
+    borderWidth: 1.5,
     borderColor: '#87898E',
     marginBottom: 30,
   },

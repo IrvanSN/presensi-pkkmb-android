@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#BC011E',
-    paddingHorizontal: 6,
+    paddingHorizontal: 15,
     paddingVertical: 9,
   },
   textButtonActive: {
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 1,
     borderColor: '#87898E',
-    paddingHorizontal: 6,
+    paddingHorizontal: 15,
     paddingVertical: 9,
   },
   textButtonDeactive: {

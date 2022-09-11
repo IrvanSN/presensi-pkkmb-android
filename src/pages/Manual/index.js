@@ -12,12 +12,11 @@ import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
-import {getData, showToast} from '../../utils';
+import {showToast} from '../../utils';
 
 const Manual = ({route}) => {
-  const {attendanceId} = route.params;
+  const {attendanceData, accountData} = route.params;
   const [attendanceType, setAttendanceType] = useState('Datang');
-  const [user, setUser] = useState({});
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchInput, setSearchInput] = useState('');
@@ -38,10 +37,6 @@ const Manual = ({route}) => {
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
-      getData('user').then(r => {
-        setUser(r.user);
-      });
-
       await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
@@ -52,7 +47,7 @@ const Manual = ({route}) => {
 
   const onAttendanceIn = () => {
     Axios.get(
-      `${API_HOST.url}/student/${searchInput}/from/attendance/${attendanceId}`,
+      `${API_HOST.url}/student/${searchInput}/from/attendance/${attendanceData._id}`,
     )
       .then(r => {
         setData(r.data.data);
@@ -66,7 +61,7 @@ const Manual = ({route}) => {
 
   const onAttendanceOut = () => {
     Axios.get(
-      `${API_HOST.url}/transaction/from/student/${searchInput}/attendance/${attendanceId}`,
+      `${API_HOST.url}/transaction/from/student/${searchInput}/attendance/${attendanceData._id}`,
     )
       .then(r => {
         setData(r.data.data);
@@ -98,11 +93,7 @@ const Manual = ({route}) => {
     <>
       <View style={styles.wrapper} onLayout={onLayoutRootView}>
         <View style={styles.navigatorWrapper}>
-          <NavigatorTab
-            date="Selasa, 27 September"
-            title="Presensi Manual"
-            navigateTo="Dashboard"
-          />
+          <NavigatorTab date={attendanceData.title} title="Presensi Manual" />
         </View>
         <View style={styles.searchSection}>
           <TextInputComponent
@@ -140,8 +131,8 @@ const Manual = ({route}) => {
                 group={item.student.group}
                 vaccineCount={item.student.vaccine.count}
                 studentId={item.student._id}
-                assigneeId={user._id}
-                attendanceId={attendanceId}
+                assigneeId={accountData.user._id}
+                attendanceId={attendanceData._id}
                 transaction={item.transaction[0]}
                 attendanceType={attendanceType}
               />

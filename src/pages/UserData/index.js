@@ -14,7 +14,7 @@ import {API_HOST} from '../../config';
 import {showToast} from '../../utils';
 
 const UserData = ({route}) => {
-  const {groupName} = route.params;
+  const {attendanceData, groupName} = route.params;
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
   const [fontsLoaded] = useFonts({
@@ -58,11 +58,7 @@ const UserData = ({route}) => {
     <>
       <View style={styles.wrapper} onLayout={onLayoutRootView}>
         <View style={styles.navigatorWrapper}>
-          <NavigatorTab
-            date="Selasa, 27 September"
-            title={groupName}
-            navigateTo="Dashboard"
-          />
+          <NavigatorTab date={attendanceData.title} title={groupName} />
         </View>
         <View style={styles.searchSection}>
           <TextInputComponent

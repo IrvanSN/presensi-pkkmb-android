@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   ScrollView,
@@ -8,15 +8,24 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {CardMenu, StatusCount} from '../../components';
+import {CardMenu, Loading, StatusCount} from '../../components';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import {getData} from '../../utils';
+import {getData, showToast} from '../../utils';
+import Axios from 'axios';
+import {API_HOST} from '../../config';
 
-const Dashboard = () => {
+const Dashboard = ({route}) => {
+  const {attendanceData} = route.params;
   const navigation = useNavigation();
-  const [accountType, setAccountType] = useState('');
   const [accountData, setAccountData] = useState({});
+  const [countStatus, setCountStatus] = useState({
+    hadir: 0,
+    izin: 0,
+    sakit: 0,
+    alpa: 0,
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
@@ -33,13 +42,34 @@ const Dashboard = () => {
     prepare();
   }, [fontsLoaded]);
 
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(true);
+      getData('user')
+        .then(r => {
+          setAccountData(r);
+          Axios.get(
+            `${API_HOST.url}/attendance/count-status/${attendanceData._id}`,
+          )
+            .then(item => {
+              setCountStatus(item.data.data);
+              setIsLoading(false);
+            })
+            .catch(e => {
+              setIsLoading(false);
+              showToast('Error from API', 'danger');
+            });
+        })
+        .catch(e => {
+          setIsLoading(false);
+          navigation.reset({index: 0, routes: [{name: 'SignIn'}]});
+          showToast('Gagal mendapatkan data akun!', 'danger');
+        });
+    }, [fontsLoaded]),
+  );
+
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
-      getData('user').then(r => {
-        setAccountType(r.accountType);
-        setAccountData(r);
-      });
-
       await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
@@ -55,79 +85,99 @@ const Dashboard = () => {
   };
 
   return (
-    <ScrollView style={styles.wrapper}>
-      <View style={styles.redBox} onLayout={onLayoutRootView}>
-        <View style={styles.header}>
-          <View style={styles.titleWrapper}>
-            <Text style={styles.subTitle}>Selasa, 27 September</Text>
-            <Text style={styles.title}>PKKMB 2022</Text>
+    <>
+      <ScrollView style={styles.wrapper}>
+        <View style={styles.redBox} onLayout={onLayoutRootView}>
+          <View style={styles.header}>
+            <View style={styles.titleWrapper}>
+              <TouchableOpacity activeOpacity={0.7} onPress={navigation.goBack}>
+                <Text style={styles.subTitle}>{attendanceData.title}</Text>
+              </TouchableOpacity>
+              <Text style={styles.title}>PKKMB 2022</Text>
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.button}
+              onPress={onLogout}>
+              <Text style={styles.buttonText}>Logout</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.button}
-            onPress={onLogout}>
-            <Text style={styles.buttonText}>Logout</Text>
-          </TouchableOpacity>
+          <View style={styles.statusCountWrapper}>
+            <StatusCount count={countStatus.hadir} title={'Hadir'} />
+            <StatusCount count={countStatus.izin} title={'Izin'} />
+            <StatusCount count={countStatus.sakit} title={'Sakit'} />
+            <StatusCount count={countStatus.alpa} title={'Alpa'} />
+          </View>
         </View>
-        <View style={styles.statusCountWrapper}>
-          <StatusCount count={581} title={'Hadir'} />
-          <StatusCount count={12} title={'Izin'} />
-          <StatusCount count={2} title={'Sakit'} />
-          <StatusCount count={20} title={'Alpa'} />
+        <View style={styles.cards}>
+          <CardMenu
+            title="Datang"
+            type="datang"
+            onPress={() =>
+              navigation.navigate('ScanIn', {
+                attendanceData,
+                accountData,
+              })
+            }
+          />
+          <CardMenu
+            title="Pulang"
+            type="pulang"
+            onPress={() =>
+              navigation.navigate('ScanOut', {
+                attendanceData,
+                accountData,
+              })
+            }
+          />
+          <CardMenu
+            title="Manual"
+            type="manual"
+            onPress={() =>
+              navigation.navigate('Manual', {
+                attendanceData,
+                accountData,
+              })
+            }
+          />
+          {accountData.accountType === 'Master' && (
+            <>
+              <CardMenu
+                title="Data Maba"
+                type="data-maba"
+                onPress={() =>
+                  navigation.navigate('UserGroupData', {
+                    attendanceData,
+                    accountData,
+                  })
+                }
+              />
+              <CardMenu
+                title="Add User"
+                type="create-user"
+                onPress={() =>
+                  navigation.navigate('AddUser', {
+                    attendanceData,
+                    accountData,
+                  })
+                }
+              />
+            </>
+          )}
+          <CardMenu
+            title="Histori"
+            type="histori"
+            onPress={() =>
+              navigation.navigate('History', {
+                attendanceData,
+                accountData,
+              })
+            }
+          />
         </View>
-      </View>
-      <View style={styles.cards}>
-        <CardMenu
-          title="Datang"
-          type="datang"
-          onPress={() =>
-            navigation.navigate('ScanIn', {
-              attendanceId: '631afd4c7c917dd1475bf868',
-              accountId: accountData?.user?._id,
-            })
-          }
-        />
-        <CardMenu
-          title="Pulang"
-          type="pulang"
-          onPress={() =>
-            navigation.navigate('ScanOut', {
-              attendanceId: '631afd4c7c917dd1475bf868',
-              accountId: accountData?.user?._id,
-            })
-          }
-        />
-        <CardMenu
-          title="Manual"
-          type="manual"
-          onPress={() =>
-            navigation.navigate('Manual', {
-              attendanceId: '631afd4c7c917dd1475bf868',
-              accountId: accountData?.user?._id,
-            })
-          }
-        />
-        {accountType === 'Master' && (
-          <>
-            <CardMenu
-              title="Data Maba"
-              type="data-maba"
-              onPress={() => navigation.navigate('UserGroupData')}
-            />
-            <CardMenu
-              title="Add User"
-              type="create-user"
-              onPress={() => navigation.navigate('AddUser')}
-            />
-          </>
-        )}
-        <CardMenu
-          title="Histori"
-          type="histori"
-          onPress={() => navigation.navigate('History')}
-        />
-      </View>
-    </ScrollView>
+      </ScrollView>
+      {isLoading && <Loading />}
+    </>
   );
 };
 
@@ -159,10 +209,22 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     fontSize: 16,
   },
+  date: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   subTitle: {
     color: '#FFFFFF',
     fontFamily: 'Montserrat-Medium',
     fontSize: 12,
+    marginRight: 5,
+  },
+  dropdownItemText: {
+    color: '#DADADA',
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 12,
+    marginVertical: 3,
   },
   button: {
     alignItems: 'center',
@@ -187,5 +249,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 50,
     marginTop: 50,
+  },
+  dropdownItem: {
+    marginTop: 20,
+    position: 'absolute',
+    backgroundColor: '#BC011E',
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
   },
 });
