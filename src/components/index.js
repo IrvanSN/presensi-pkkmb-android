@@ -1,5 +1,4 @@
 import ActionButton from './ActionButton';
-import Scanner from './Scanner';
 import CardMenu from './CardMenu';
 import Loading from './Loading';
 import StatusCount from './StatusCount';
@@ -12,7 +11,6 @@ import BasicButton from './BasicButton';
 import UserCard from './UserCard';
 
 export {
-  Scanner,
   ActionButton,
   CardMenu,
   Loading,

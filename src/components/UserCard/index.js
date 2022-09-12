@@ -1,14 +1,34 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {showToast} from '../../utils';
+import {useNavigation} from '@react-navigation/native';
+import Axios from 'axios';
+import {API_HOST} from '../../config';
 
-const UserCard = ({
-  id,
-  name,
-  vaccineCount,
-  groupName,
-  onPressChangeData,
-  onPressDeleteData,
-}) => {
+const UserCard = ({id, name, vaccineCount, groupName, onPressChangeData}) => {
+  const navigation = useNavigation();
+  const [clickCount, setClickCount] = useState(0);
+
+  const onDeleteData = () => {
+    setClickCount(clickCount + 1);
+    if (clickCount === 3) {
+      Axios.delete(`${API_HOST.url}/student/${id}/delete`, {group: groupName})
+        .then(r => {
+          navigation.goBack();
+          showToast(`Berhasil hapus data ${r.data.data.name}!`, 'success');
+        })
+        .catch(e => {
+          showToast(`Error: ${e.response.message}`, 'danger');
+        });
+    } else if (clickCount === 0) {
+      showToast('Untuk menghapus data klik 3x tombol Hapus Data!', 'info');
+    } else {
+      showToast(
+        `Klik ${3 - clickCount}x lagi untuk menghapus data!`,
+        'warning',
+      );
+    }
+  };
   return (
     <View style={styles.wrapper}>
       <Text style={styles.nameText}>{name}</Text>
@@ -28,7 +48,7 @@ const UserCard = ({
         <TouchableOpacity
           style={styles.buttonDeactive}
           activeOpacity={0.7}
-          onPress={onPressDeleteData}>
+          onPress={onDeleteData}>
           <Text style={styles.textButtonDeactive}>Hapus Data</Text>
         </TouchableOpacity>
       </View>

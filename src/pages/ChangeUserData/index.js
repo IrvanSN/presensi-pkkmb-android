@@ -13,7 +13,6 @@ import * as SplashScreen from 'expo-splash-screen';
 
 const ChangeUserData = ({route}) => {
   const {userData, attendanceData} = route.params;
-  console.log(userData);
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
@@ -44,13 +43,18 @@ const ChangeUserData = ({route}) => {
   return (
     <View style={styles.wrapper} onLayout={onLayoutRootView}>
       <View style={styles.navigatorWrapper}>
-        <NavigatorTab date={attendanceData.title} title={userData.name} />
+        <NavigatorTab date={attendanceData.title} title="Ubah data maba" />
       </View>
       <ScrollView style={styles.bodyWrapper}>
         <Text style={styles.inputTextLabel}>Nama Lengkap</Text>
         <TextInput style={styles.inputText} value={userData.name} />
         <Text style={styles.inputTextLabel}>Kelompok</Text>
-        <TextInput style={styles.inputText} value={userData.group} />
+        <TextInput
+          style={styles.inputText}
+          value={userData.group}
+          editable={false}
+          selectTextOnFocus={false}
+        />
         <Text style={styles.inputTextLabel}>Vaksinasi Ke</Text>
         <TextInput
           style={{
@@ -73,6 +77,15 @@ const ChangeUserData = ({route}) => {
             uri: userData.vaccine.proof,
           }}
         />
+        {/*<View style={{justifyContent: 'center', alignItems: 'center'}}>*/}
+        {/*  <Text style={styles.inputTextLabel}>QR Code</Text>*/}
+        {/*  <Image*/}
+        {/*    style={styles.vaccineProof}*/}
+        {/*    source={{*/}
+        {/*      uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${userData._id}`,*/}
+        {/*    }}*/}
+        {/*  />*/}
+        {/*</View>*/}
       </ScrollView>
     </View>
   );
@@ -109,7 +122,7 @@ const styles = StyleSheet.create({
   },
   vaccineProof: {
     flex: 1,
-    width: 100,
-    height: 100,
+    width: 150,
+    height: 150,
   },
 });
