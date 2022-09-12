@@ -9,6 +9,7 @@ import AddUser from './AddUser';
 import History from './History';
 import UserData from './UserData';
 import AttendancePicker from './AttendancePicker';
+import ChangeUserData from './ChangeUserData';
 
 export {
   SignIn,
@@ -22,4 +23,5 @@ export {
   History,
   UserData,
   AttendancePicker,
+  ChangeUserData,
 };

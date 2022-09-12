@@ -12,11 +12,16 @@ import {
 import Axios from 'axios';
 import {API_HOST} from '../../config';
 import {showToast} from '../../utils';
+import {useNavigation} from '@react-navigation/native';
 
 const UserData = ({route}) => {
   const {attendanceData, groupName} = route.params;
+  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [isClickSearchButton, setIsClickSearchButton] = useState(false);
+  const [dataMatch, setDataMatch] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
     'Montserrat-Medium': require('../../assets/fonts/Montserrat-Medium.ttf'),
@@ -28,13 +33,6 @@ const UserData = ({route}) => {
   useEffect(() => {
     async function prepare() {
       await SplashScreen.preventAutoHideAsync();
-    }
-
-    prepare();
-  }, [fontsLoaded]);
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
       setIsLoading(true);
       Axios.post(`${API_HOST.url}/student/all/from/group`, {group: groupName})
         .then(r => {
@@ -45,7 +43,13 @@ const UserData = ({route}) => {
           setIsLoading(false);
           showToast(`Error: ${e}`, 'danger');
         });
+    }
 
+    prepare();
+  }, [fontsLoaded]);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
       await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
@@ -53,6 +57,17 @@ const UserData = ({route}) => {
   if (!fontsLoaded) {
     return null;
   }
+
+  const onSubmit = () => {
+    setIsClickSearchButton(true);
+    const regex = new RegExp(`${searchInput}`, 'i');
+    const matchData = data.filter(item => item.name.match(regex));
+    setDataMatch(matchData);
+
+    if (searchInput === '') {
+      setIsClickSearchButton(false);
+    }
+  };
 
   return (
     <>
@@ -65,19 +80,43 @@ const UserData = ({route}) => {
             type="username"
             isPasswordInput={false}
             placeholder="Cari nama anggota"
+            value={searchInput}
+            onChangeText={value => setSearchInput(value)}
           />
-          <SearchButton />
+          <SearchButton onPress={onSubmit} />
         </View>
         <ScrollView style={styles.collectionWrapper}>
-          {data.map(item => (
-            <UserCard
-              groupName={item.group}
-              name={item.name}
-              vaccineCount={item.vaccine.count}
-              id={item._id}
-              key={item._id}
-            />
-          ))}
+          {isClickSearchButton
+            ? dataMatch.map(item => (
+                <UserCard
+                  groupName={item.group}
+                  name={item.name}
+                  vaccineCount={item.vaccine.count}
+                  id={item._id}
+                  key={item._id}
+                  onPressChangeData={() =>
+                    navigation.navigate('ChangeUserData', {
+                      userData: item,
+                      attendanceData,
+                    })
+                  }
+                />
+              ))
+            : data.map(item => (
+                <UserCard
+                  groupName={item.group}
+                  name={item.name}
+                  vaccineCount={item.vaccine.count}
+                  id={item._id}
+                  key={item._id}
+                  onPressChangeData={() =>
+                    navigation.navigate('ChangeUserData', {
+                      userData: item,
+                      attendanceData,
+                    })
+                  }
+                />
+              ))}
         </ScrollView>
       </View>
       {isLoading && <Loading />}

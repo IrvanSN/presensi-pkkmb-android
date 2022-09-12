@@ -11,7 +11,7 @@ import React, {useEffect, useState} from 'react';
 import {BarCodeScanner} from 'expo-barcode-scanner';
 import {API_HOST} from '../../config';
 import Axios from 'axios';
-import Loading from '../Loading';
+import {Loading} from '../../components';
 import {useNavigation} from '@react-navigation/native';
 import {NavigatorTab} from '../index';
 

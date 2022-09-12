@@ -3,6 +3,7 @@ import React from 'react';
 import {
   AddUser,
   AttendancePicker,
+  ChangeUserData,
   Dashboard,
   History,
   Manual,
@@ -62,6 +63,11 @@ const Router = () => {
       <Stack.Screen
         name="UserData"
         component={UserData}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ChangeUserData"
+        component={ChangeUserData}
         options={{headerShown: false}}
       />
       <Stack.Screen

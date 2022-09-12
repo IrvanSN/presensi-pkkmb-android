@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import {
   BasicButton,
   Loading,
@@ -89,6 +89,7 @@ const Manual = ({route}) => {
       showToast('Gagal mendapatkan data!', 'danger');
     }
   };
+
   return (
     <>
       <View style={styles.wrapper} onLayout={onLayoutRootView}>
@@ -124,6 +125,14 @@ const Manual = ({route}) => {
           />
         </View>
         <ScrollView style={styles.collectionWrapper}>
+          {data.length === 0 && (
+            <View style={styles.wrapperImage}>
+              <Image
+                style={styles.logoVerticalStyles}
+                source={require('../../assets/logo/LogoVertical.png')}
+              />
+            </View>
+          )}
           {data.map(item => (
             <View key={item.student._id}>
               <ManualCard
@@ -176,4 +185,12 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   gap: {marginTop: 28},
+  wrapperImage: {
+    alignItems: 'center',
+  },
+  logoVerticalStyles: {
+    marginTop: 60,
+    width: 173,
+    height: 282,
+  },
 });

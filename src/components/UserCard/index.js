@@ -1,7 +1,14 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-const UserCard = ({id, name, vaccineCount, groupName}) => {
+const UserCard = ({
+  id,
+  name,
+  vaccineCount,
+  groupName,
+  onPressChangeData,
+  onPressDeleteData,
+}) => {
   return (
     <View style={styles.wrapper}>
       <Text style={styles.nameText}>{name}</Text>
@@ -11,11 +18,17 @@ const UserCard = ({id, name, vaccineCount, groupName}) => {
         <Text style={styles.descriptionText}>Kelompok: {groupName}</Text>
       </View>
       <View style={styles.buttonWrapper}>
-        <TouchableOpacity style={styles.buttonActive} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={styles.buttonActive}
+          activeOpacity={0.7}
+          onPress={onPressChangeData}>
           <Text style={styles.textButtonActive}>Ubah Data</Text>
         </TouchableOpacity>
         <View style={{marginHorizontal: 15}} />
-        <TouchableOpacity style={styles.buttonDeactive} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={styles.buttonDeactive}
+          activeOpacity={0.7}
+          onPress={onPressDeleteData}>
           <Text style={styles.textButtonDeactive}>Hapus Data</Text>
         </TouchableOpacity>
       </View>

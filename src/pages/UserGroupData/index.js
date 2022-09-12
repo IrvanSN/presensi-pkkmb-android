@@ -18,6 +18,9 @@ const UserGroupData = ({route}) => {
   const navigation = useNavigation();
   const {attendanceData} = route.params;
   const [data, setData] = useState([]);
+  const [isClickSearchButton, setIsClickSearchButton] = useState(false);
+  const [dataMatch, setDataMatch] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
@@ -30,13 +33,6 @@ const UserGroupData = ({route}) => {
   useEffect(() => {
     async function prepare() {
       await SplashScreen.preventAutoHideAsync();
-    }
-
-    prepare();
-  }, [fontsLoaded]);
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
       setIsLoading(true);
       Axios.get(`${API_HOST.url}/student/count/from/group`)
         .then(r => {
@@ -47,7 +43,13 @@ const UserGroupData = ({route}) => {
           setIsLoading(false);
           showToast(`Error: ${e}`, 'danger');
         });
+    }
 
+    prepare();
+  }, [fontsLoaded]);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
       await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
@@ -55,6 +57,17 @@ const UserGroupData = ({route}) => {
   if (!fontsLoaded && data.length === 0) {
     return null;
   }
+
+  const onSubmit = () => {
+    setIsClickSearchButton(true);
+    const regex = new RegExp(`${searchInput}`, 'i');
+    const matchData = data.filter(item => item.groupName.match(regex));
+    setDataMatch(matchData);
+
+    if (searchInput === '') {
+      setIsClickSearchButton(false);
+    }
+  };
 
   return (
     <>
@@ -67,25 +80,43 @@ const UserGroupData = ({route}) => {
             type="username"
             isPasswordInput={false}
             placeholder="Cari nama kelompok"
+            value={searchInput}
+            onChangeText={value => setSearchInput(value)}
           />
-          <SearchButton />
+          <SearchButton onPress={onSubmit} />
         </View>
         <ScrollView style={styles.collectionWrapper}>
-          {data.map(item => (
-            <View key={item.groupId}>
-              <UserGroupCard
-                groupName={item.groupName}
-                memberCount={item.total}
-                onPressMore={() =>
-                  navigation.navigate('UserData', {
-                    attendanceData,
-                    groupName: item.groupName,
-                  })
-                }
-              />
-              <View style={styles.gap} />
-            </View>
-          ))}
+          {isClickSearchButton
+            ? dataMatch.map(item => (
+                <View key={item.groupId}>
+                  <UserGroupCard
+                    groupName={item.groupName}
+                    memberCount={item.total}
+                    onPressMore={() =>
+                      navigation.navigate('UserData', {
+                        attendanceData,
+                        groupName: item.groupName,
+                      })
+                    }
+                  />
+                  <View style={styles.gap} />
+                </View>
+              ))
+            : data.map(item => (
+                <View key={item.groupId}>
+                  <UserGroupCard
+                    groupName={item.groupName}
+                    memberCount={item.total}
+                    onPressMore={() =>
+                      navigation.navigate('UserData', {
+                        attendanceData,
+                        groupName: item.groupName,
+                      })
+                    }
+                  />
+                  <View style={styles.gap} />
+                </View>
+              ))}
         </ScrollView>
       </View>
       {isLoading && <Loading />}

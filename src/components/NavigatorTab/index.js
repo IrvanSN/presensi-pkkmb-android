@@ -3,7 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {ChevronLeftNavigator} from '../../assets/icon';
 import {useNavigation} from '@react-navigation/native';
 
-const NavigatorTab = ({date, title}) => {
+const NavigatorTab = ({date, title, navigateTo, isWhiteColor}) => {
   const navigation = useNavigation();
 
   return (
@@ -12,12 +12,30 @@ const NavigatorTab = ({date, title}) => {
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.circleChevron}
-          onPress={() => navigation.goBack()}>
+          onPress={
+            navigateTo
+              ? () => navigation.navigate(navigateTo)
+              : () => navigation.goBack()
+          }>
           <ChevronLeftNavigator />
         </TouchableOpacity>
         <View style={styles.header}>
-          <Text style={styles.date}>{date}</Text>
-          <Text style={styles.title}>{title}</Text>
+          <Text
+            style={{
+              fontFamily: 'Montserrat-Medium',
+              fontSize: 12,
+              color: isWhiteColor ? 'white' : 'black',
+            }}>
+            {date}
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'Montserrat-Bold',
+              fontSize: 16,
+              color: isWhiteColor ? 'white' : 'black',
+            }}>
+            {title}
+          </Text>
         </View>
       </View>
     </View>
@@ -37,13 +55,5 @@ const styles = StyleSheet.create({
   header: {
     marginLeft: 15,
     flexDirection: 'column',
-  },
-  date: {
-    fontFamily: 'Montserrat-Medium',
-    fontSize: 12,
-  },
-  title: {
-    fontFamily: 'Montserrat-Bold',
-    fontSize: 16,
   },
 });

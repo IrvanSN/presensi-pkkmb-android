@@ -5,5 +5,7 @@ export const showToast = (message, type) => {
     message,
     type,
     backgroundColor: type === 'success' ? '#05BC01' : '#DC0000',
+    floating: true,
+    style: {marginTop: 30},
   });
 };

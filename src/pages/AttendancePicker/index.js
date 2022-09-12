@@ -31,13 +31,6 @@ const AttendancePicker = () => {
   useEffect(() => {
     async function prepare() {
       await SplashScreen.preventAutoHideAsync();
-    }
-
-    prepare();
-  }, [fontsLoaded]);
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
       setIsLoading(true);
       Axios.get(`${API_HOST.url}/attendance/all`)
         .then(item => {
@@ -48,6 +41,13 @@ const AttendancePicker = () => {
           setIsLoading(false);
           showToast('Error from API', 'danger');
         });
+    }
+
+    prepare();
+  }, [fontsLoaded]);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
       await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
