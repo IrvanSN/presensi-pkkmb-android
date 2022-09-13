@@ -1,22 +1,23 @@
-import React, {useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useFonts} from 'expo-font';
 import {API_HOST} from '../../config';
 import {
   ActionButton,
   Loading,
-  TextInputComponent,
   NavigatorTab,
+  TextInputComponent,
 } from '../../components';
 import Axios from 'axios';
 import * as SplashScreen from 'expo-splash-screen';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {showToast, storeData} from '../../utils';
+import {showToast} from '../../utils';
 
-const AddUser = () => {
-  const [name, setName] = useState();
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
+const AddUser = ({route}) => {
+  const {attendanceData} = route.params;
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
@@ -45,47 +46,53 @@ const AddUser = () => {
   }
 
   const onSubmit = () => {
-    console.log(username, password, confirmPassword);
     setIsLoading(true);
+
+    if (password !== confirmPassword) {
+      setIsLoading(false);
+      setPassword('');
+      setConfirmPassword('');
+      return showToast('Passsword yang anda masukkan tidak sama!', 'danger');
+    }
+
+    if (!(password && confirmPassword)) {
+      setIsLoading(false);
+      return showToast('Lengkapi semua form!', 'danger');
+    }
+
     const data = {
       name,
       username,
       password,
     };
 
-    if (password !== confirmPassword) {
-      setIsLoading(false);
-      showToast('Passsword yang anda masukkan tidak sama', 'danger');
-    }
+    Axios.post(`${API_HOST.url}/kafas/add`, data)
+      .then(r => {
+        setIsLoading(false);
+        showToast(
+          `Berhasil membuat akun kafas ${r.data.data.username}!`,
+          'success',
+        );
+      })
+      .catch(e => {
+        setIsLoading(false);
+        showToast(e.response.data.message, 'danger');
+      });
 
-    if (username && password) {
-      Axios.post(`${API_HOST.url}/kafas/add`, data)
-        .then(r => {
-          setIsLoading(false);
-          showToast('${name} Telah Terdaftar', 'success');
-        })
-        .catch(e => {
-          setIsLoading(false);
-          showToast(e.response.data.message, 'danger');
-        });
-    } else {
-      setIsLoading(false);
-      showToast('Field masih kosong', 'danger');
-    }
+    setName('');
+    setUsername('');
+    setPassword('');
+    setConfirmPassword('');
   };
 
   return (
     <>
       <View style={styles.wrapper} onLayout={onLayoutRootView}>
-        <ScrollView style={styles.scrollViewStyles}>
-          <View style={styles.navigatorWrapper}>
-            <NavigatorTab
-              date="Selasa, 27 September"
-              title="Presensi Manual"
-              navigateTo="Dashboard"
-            />
-          </View>
-          <View style={styles.warpperFormSignIn}>
+        <View style={styles.navigatorWrapper}>
+          <NavigatorTab date={attendanceData.title} title="Add kafas" />
+        </View>
+        <ScrollView>
+          <View style={styles.formWrapper}>
             <TextInputComponent
               placeholder="Masukkan Nama"
               isPasswordInput={false}
@@ -104,7 +111,7 @@ const AddUser = () => {
             <View style={{marginTop: 7}} />
             <TextInputComponent
               placeholder="Masukkan Password"
-              isPassword={true}
+              isPasswordInput={true}
               type="password"
               value={password}
               onChangeText={value => setPassword(value)}
@@ -112,16 +119,16 @@ const AddUser = () => {
             <View style={{marginTop: 7}} />
             <TextInputComponent
               placeholder="Konfirmasi Password"
-              isPassword={true}
+              isPasswordInput={true}
               type="password"
               value={confirmPassword}
               onChangeText={value => setConfirmPassword(value)}
             />
-            <ActionButton onPress={onSubmit} />
           </View>
         </ScrollView>
-        {isLoading && <Loading />}
+        <ActionButton onPress={onSubmit} title="Simpan" />
       </View>
+      {isLoading && <Loading />}
     </>
   );
 };
@@ -132,12 +139,10 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     paddingTop: 50,
+    marginHorizontal: 15,
   },
-  navigatorWrapper: {
-    paddingHorizontal: 15,
-  },
-  warpperFormSignIn: {
-    marginTop: 57,
-    marginHorizontal: 17,
+  formWrapper: {
+    flex: 1,
+    marginTop: 20,
   },
 });

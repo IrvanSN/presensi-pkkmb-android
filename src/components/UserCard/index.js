@@ -10,6 +10,10 @@ const UserCard = ({id, name, vaccineCount, groupName, onPressChangeData}) => {
   const [clickCount, setClickCount] = useState(0);
 
   const onDeleteData = () => {
+    if (clickCount < 0) {
+      setClickCount(3);
+    }
+
     setClickCount(clickCount + 1);
     if (clickCount === 3) {
       Axios.delete(`${API_HOST.url}/student/${id}/delete`, {group: groupName})

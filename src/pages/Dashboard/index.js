@@ -65,7 +65,7 @@ const Dashboard = ({route}) => {
           navigation.reset({index: 0, routes: [{name: 'SignIn'}]});
           showToast('Gagal mendapatkan data akun!', 'danger');
         });
-    }, [fontsLoaded]),
+    }, []),
   );
 
   const onLayoutRootView = useCallback(async () => {
@@ -89,16 +89,11 @@ const Dashboard = ({route}) => {
       <ScrollView style={styles.wrapper}>
         <View style={styles.redBox} onLayout={onLayoutRootView}>
           <View style={styles.header}>
-            <View style={styles.titleWrapper}>
-              {/* <TouchableOpacity activeOpacity={0.7} onPress={navigation.goBack}>
-                <Text style={styles.subTitle}>{attendanceData.title}</Text>
-              </TouchableOpacity> */}
-              <NavigatorTab
-                date={attendanceData.title}
-                title="PKKMB 2022"
-                isWhiteColor={true}
-              />
-            </View>
+            <NavigatorTab
+              date={attendanceData.title}
+              title="PKKMB 2022"
+              isWhiteColor={true}
+            />
             <TouchableOpacity
               activeOpacity={0.7}
               style={styles.button}
@@ -157,7 +152,7 @@ const Dashboard = ({route}) => {
                 }
               />
               <CardMenu
-                title="Add User"
+                title="Add kafas"
                 type="create-user"
                 onPress={() =>
                   navigation.navigate('AddUser', {
@@ -198,15 +193,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   redBox: {
-    paddingHorizontal: 18,
+    paddingHorizontal: 15,
     paddingTop: 25,
     backgroundColor: '#BC011E',
     height: 238,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-  },
-  titleWrapper: {
-    flexDirection: 'column',
   },
   title: {
     color: '#FFFFFF',

@@ -29,9 +29,10 @@ const AttendancePicker = () => {
   });
 
   useEffect(() => {
+    setIsLoading(true);
+
     async function prepare() {
       await SplashScreen.preventAutoHideAsync();
-      setIsLoading(true);
       Axios.get(`${API_HOST.url}/attendance/all`)
         .then(item => {
           setDataAttendance(item.data.data);

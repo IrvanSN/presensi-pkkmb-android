@@ -1,14 +1,14 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-const ActionButton = props => {
+const ActionButton = ({onPress, title}) => {
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity
         activeOpacity={0.7}
-        onPress={props.onPress}
+        onPress={onPress}
         style={styles.buttonStyles}>
-        <Text style={styles.text}>Sign In</Text>
+        <Text style={styles.text}>{title}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     justifyContent: 'center',
-    marginTop: 42,
   },
   buttonStyles: {
     alignItems: 'center',

@@ -86,7 +86,8 @@ export default function SignIn() {
             value={password}
             onChangeText={value => setPassword(value)}
           />
-          <ActionButton onPress={onSubmit} />
+          <View style={{marginTop: 42}} />
+          <ActionButton onPress={onSubmit} title="Sign In" />
         </View>
         <View style={styles.footer}>
           <MadeByCoder />

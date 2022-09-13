@@ -3,8 +3,8 @@ import React from 'react';
 import {
   AddUser,
   AttendancePicker,
-  ChangeUserData,
   Dashboard,
+  DetailUserData,
   History,
   Manual,
   ScanIn,
@@ -66,8 +66,8 @@ const Router = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="ChangeUserData"
-        component={ChangeUserData}
+        name="DetailUserData"
+        component={DetailUserData}
         options={{headerShown: false}}
       />
       <Stack.Screen

@@ -12,10 +12,10 @@ import {
 import Axios from 'axios';
 import {API_HOST} from '../../config';
 import {showToast} from '../../utils';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 const UserData = ({route}) => {
-  const {attendanceData, groupName} = route.params;
+  const {groupData, attendanceData, groupName} = route.params;
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -33,6 +33,13 @@ const UserData = ({route}) => {
   useEffect(() => {
     async function prepare() {
       await SplashScreen.preventAutoHideAsync();
+    }
+
+    prepare();
+  }, [fontsLoaded]);
+
+  useFocusEffect(
+    useCallback(() => {
       setIsLoading(true);
       Axios.post(`${API_HOST.url}/student/all/from/group`, {group: groupName})
         .then(r => {
@@ -43,10 +50,8 @@ const UserData = ({route}) => {
           setIsLoading(false);
           showToast(`Error: ${e}`, 'danger');
         });
-    }
-
-    prepare();
-  }, [fontsLoaded]);
+    }, []),
+  );
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -54,7 +59,7 @@ const UserData = ({route}) => {
     }
   }, [fontsLoaded]);
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded && data.length === 0) {
     return null;
   }
 
@@ -95,9 +100,10 @@ const UserData = ({route}) => {
                   id={item._id}
                   key={item._id}
                   onPressChangeData={() =>
-                    navigation.navigate('ChangeUserData', {
+                    navigation.navigate('DetailUserData', {
                       userData: item,
                       attendanceData,
+                      groupData,
                     })
                   }
                 />
@@ -110,9 +116,10 @@ const UserData = ({route}) => {
                   id={item._id}
                   key={item._id}
                   onPressChangeData={() =>
-                    navigation.navigate('ChangeUserData', {
+                    navigation.navigate('DetailUserData', {
                       userData: item,
                       attendanceData,
+                      groupData,
                     })
                   }
                 />

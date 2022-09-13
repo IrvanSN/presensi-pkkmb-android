@@ -12,7 +12,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
 import {showToast} from '../../utils';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 const UserGroupData = ({route}) => {
   const navigation = useNavigation();
@@ -33,6 +33,13 @@ const UserGroupData = ({route}) => {
   useEffect(() => {
     async function prepare() {
       await SplashScreen.preventAutoHideAsync();
+    }
+
+    prepare();
+  }, [fontsLoaded]);
+
+  useFocusEffect(
+    useCallback(() => {
       setIsLoading(true);
       Axios.get(`${API_HOST.url}/student/count/from/group`)
         .then(r => {
@@ -43,10 +50,8 @@ const UserGroupData = ({route}) => {
           setIsLoading(false);
           showToast(`Error: ${e}`, 'danger');
         });
-    }
-
-    prepare();
-  }, [fontsLoaded]);
+    }, []),
+  );
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -96,6 +101,7 @@ const UserGroupData = ({route}) => {
                       navigation.navigate('UserData', {
                         attendanceData,
                         groupName: item.groupName,
+                        groupData: data,
                       })
                     }
                   />
@@ -111,6 +117,7 @@ const UserGroupData = ({route}) => {
                       navigation.navigate('UserData', {
                         attendanceData,
                         groupName: item.groupName,
+                        groupData: data,
                       })
                     }
                   />
