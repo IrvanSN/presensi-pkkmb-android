@@ -9,6 +9,23 @@ import Svg, {
 } from 'react-native-svg';
 import React from 'react';
 
+const ChevronLeftWhiteNavigator = props => (
+  <Svg
+    width={32}
+    height={32}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}>
+    <Rect opacity={0.07} width={32} height={32} rx={16} fill="#000" />
+    <Path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="m13.845 16 5.488 5.488a.833.833 0 1 1-1.178 1.179L11.488 16l6.667-6.667a.833.833 0 0 1 1.178 1.179L13.845 16Z"
+      fill="#fff"
+    />
+  </Svg>
+);
+
 const ChevronLeftNavigator = props => (
   <Svg
     width={32}
@@ -406,6 +423,7 @@ export {
   ChevronLeft,
   ChevronRight,
   ChevronLeftNavigator,
+  ChevronLeftWhiteNavigator,
   ChevronBottom,
   ChevronUp,
   MadeByCoder,

@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {ChevronLeftNavigator} from '../../assets/icon';
+import {ChevronLeftNavigator, ChevronLeftWhiteNavigator} from '../../assets/icon';
 import {useNavigation} from '@react-navigation/native';
 
 const NavigatorTab = ({date, title, navigateTo, isWhiteColor}) => {
@@ -17,7 +17,12 @@ const NavigatorTab = ({date, title, navigateTo, isWhiteColor}) => {
               ? () => navigation.navigate(navigateTo)
               : () => navigation.goBack()
           }>
-          <ChevronLeftNavigator />
+            {isWhiteColor ? (
+              <ChevronLeftWhiteNavigator />
+            ) : (
+            <ChevronLeftNavigator />
+            )}
+          
         </TouchableOpacity>
         <View style={styles.header}>
           <Text

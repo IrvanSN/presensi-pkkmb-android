@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {CardMenu, Loading, StatusCount} from '../../components';
+import {CardMenu, Loading, NavigatorTab, StatusCount} from '../../components';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {getData, showToast} from '../../utils';
@@ -90,10 +90,14 @@ const Dashboard = ({route}) => {
         <View style={styles.redBox} onLayout={onLayoutRootView}>
           <View style={styles.header}>
             <View style={styles.titleWrapper}>
-              <TouchableOpacity activeOpacity={0.7} onPress={navigation.goBack}>
+              {/* <TouchableOpacity activeOpacity={0.7} onPress={navigation.goBack}>
                 <Text style={styles.subTitle}>{attendanceData.title}</Text>
-              </TouchableOpacity>
-              <Text style={styles.title}>PKKMB 2022</Text>
+              </TouchableOpacity> */}
+              <NavigatorTab
+                date={attendanceData.title}
+                title="PKKMB 2022"
+                isWhiteColor={true}
+              />
             </View>
             <TouchableOpacity
               activeOpacity={0.7}
