@@ -93,6 +93,7 @@ const AddUser = ({route}) => {
         </View>
         <ScrollView>
           <View style={styles.formWrapper}>
+            <View style={{marginTop: 20}}/>
             <TextInputComponent
               placeholder="Masukkan Nama"
               isPasswordInput={false}
@@ -100,7 +101,7 @@ const AddUser = ({route}) => {
               value={name}
               onChangeText={value => setName(value)}
             />
-            <View style={{marginTop: 7}} />
+            <View style={{marginTop: 18}} />
             <TextInputComponent
               placeholder="Masukkan Username"
               isPasswordInput={false}
@@ -108,7 +109,7 @@ const AddUser = ({route}) => {
               value={username}
               onChangeText={value => setUsername(value)}
             />
-            <View style={{marginTop: 7}} />
+            <View style={{marginTop: 18}} />
             <TextInputComponent
               placeholder="Masukkan Password"
               isPasswordInput={true}
@@ -116,7 +117,7 @@ const AddUser = ({route}) => {
               value={password}
               onChangeText={value => setPassword(value)}
             />
-            <View style={{marginTop: 7}} />
+            <View style={{marginTop: 18}} />
             <TextInputComponent
               placeholder="Konfirmasi Password"
               isPasswordInput={true}
@@ -140,6 +141,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 50,
     marginHorizontal: 15,
+  },
+  buttonWrapper: {
+    position: 'fixed'
   },
   formWrapper: {
     flex: 1,

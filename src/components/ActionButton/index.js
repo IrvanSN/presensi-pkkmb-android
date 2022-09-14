@@ -22,7 +22,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonStyles: {
-    alignItems: 'center',
+    alignItems: 'center' ,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 10,
     borderRadius: 23,
     paddingVertical: 15,
     backgroundColor: '#BC011E',

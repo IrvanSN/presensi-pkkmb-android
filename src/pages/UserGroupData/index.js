@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {
+  ActionButton,
   Loading,
   NavigatorTab,
   SearchButton,
@@ -17,6 +18,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 const UserGroupData = ({route}) => {
   const navigation = useNavigation();
   const {attendanceData} = route.params;
+  const [accountData, setAccountData] = useState({});
   const [data, setData] = useState([]);
   const [isClickSearchButton, setIsClickSearchButton] = useState(false);
   const [dataMatch, setDataMatch] = useState([]);
@@ -125,6 +127,16 @@ const UserGroupData = ({route}) => {
                 </View>
               ))}
         </ScrollView>
+        <View style={styles.buttonWrapper}>
+          <ActionButton
+            onPress={() =>
+              navigation.navigate('DetailUserData', {
+                attendanceData,
+                accountData,
+            })}
+            title="Tambah MABA"
+          />
+        </View>
       </View>
       {isLoading && <Loading />}
     </>
@@ -141,6 +153,9 @@ const styles = StyleSheet.create({
   navigatorWrapper: {
     paddingHorizontal: 15,
   },
+  buttonWrapper: {
+    marginHorizontal: 15,
+  },
   searchSection: {
     flexDirection: 'row',
     marginTop: 20,
@@ -150,6 +165,7 @@ const styles = StyleSheet.create({
   },
   collectionWrapper: {
     paddingTop: 5,
+    marginBottom: 70,
   },
   gap: {marginTop: 28},
 });
