@@ -3,17 +3,18 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {ChevronBottom, ChevronUp} from '../../assets/icon';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
-import {showToast} from '../../utils';
+import {generateError, showToast} from '../../utils';
 
 const ManualCard = ({
   name,
   group,
   vaccineCount,
   studentId,
-  assigneeId,
   attendanceId,
   transaction,
   attendanceType,
+  accountData,
+  navigation,
 }) => {
   const [showItemDropdown, setShowItemDropdown] = useState(false);
   const [isAlreadyOut, setIsAlreadyOut] = useState(
@@ -30,23 +31,22 @@ const ManualCard = ({
       const data = {
         studentId,
         attendanceId,
-        assigneeId,
+        assigneeId: accountData.user._id,
         status: changedStatus,
       };
 
-      Axios.post(`${API_HOST.url}/transaction/in`, data)
+      Axios.post(`${API_HOST.url}/transaction/in`, data, {
+        headers: {
+          Authorization: `Bearer ${accountData.token}`,
+        },
+      })
         .then(r =>
           showToast(
-            `${r.data.code}: Berhasil mengubah status presensi ${r.data.data.student.name} menjadi ${r.data.data.status}`,
+            `Berhasil mengubah status presensi ${r.data.data.student.name} menjadi ${r.data.data.status}`,
             'success',
           ),
         )
-        .catch(e =>
-          showToast(
-            `Error ${e.response.data.code}: ${e.response.data.message}`,
-            'danger',
-          ),
-        );
+        .catch(e => generateError(e, navigation));
     } else {
       setIsAlreadyOut(changedStatus);
       const data = {
@@ -55,19 +55,18 @@ const ManualCard = ({
         status: changedStatus,
       };
 
-      Axios.put(`${API_HOST.url}/transaction/out`, data)
+      Axios.put(`${API_HOST.url}/transaction/out`, data, {
+        headers: {
+          Authorization: `Bearer ${accountData.token}`,
+        },
+      })
         .then(r =>
           showToast(
-            `${r.data.code}: Berhasil mengubah presensi pulang ${r.data.data.student.name} menjadi ${changedStatus}`,
+            `Berhasil mengubah presensi pulang ${r.data.data.student.name} menjadi ${changedStatus}`,
             'success',
           ),
         )
-        .catch(e =>
-          showToast(
-            `Error ${e.response.data.code}: ${e.response.data.message}`,
-            'danger',
-          ),
-        );
+        .catch(e => generateError(e, navigation));
     }
   };
 

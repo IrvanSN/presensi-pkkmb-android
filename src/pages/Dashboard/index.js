@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
@@ -11,7 +10,7 @@ import {
 import {CardMenu, Loading, NavigatorTab, StatusCount} from '../../components';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import {getData, showToast} from '../../utils';
+import {generateError, getData, removeItem, showToast} from '../../utils';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
 
@@ -50,6 +49,11 @@ const Dashboard = ({route}) => {
           setAccountData(r);
           Axios.get(
             `${API_HOST.url}/attendance/count-status/${attendanceData._id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${r.token}`,
+              },
+            },
           )
             .then(item => {
               setCountStatus(item.data.data);
@@ -57,7 +61,7 @@ const Dashboard = ({route}) => {
             })
             .catch(e => {
               setIsLoading(false);
-              showToast('Error from API', 'danger');
+              generateError(e, navigation);
             });
         })
         .catch(e => {
@@ -79,7 +83,7 @@ const Dashboard = ({route}) => {
   }
 
   const onLogout = () => {
-    AsyncStorage.removeItem('user').then(() =>
+    removeItem('user').then(() =>
       navigation.reset({index: 0, routes: [{name: 'SignIn'}]}),
     );
   };

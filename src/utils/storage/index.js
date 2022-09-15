@@ -18,3 +18,12 @@ export const getData = async storageKey => {
     showToast('Gagal mengambil data dari localstorage!', 'danger');
   }
 };
+
+export const removeItem = async storageKey => {
+  try {
+    const jsonValue = await AsyncStorage.removeItem(storageKey);
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    showToast('Gagal menghapus data dari localstorage!', 'danger');
+  }
+};

@@ -12,9 +12,11 @@ import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
-import {showToast} from '../../utils';
+import {generateError, showToast} from '../../utils';
+import {useNavigation} from '@react-navigation/native';
 
 const Manual = ({route}) => {
+  const navigation = useNavigation();
   const {attendanceData, accountData} = route.params;
   const [attendanceType, setAttendanceType] = useState('Datang');
   const [data, setData] = useState([]);
@@ -48,32 +50,46 @@ const Manual = ({route}) => {
   const onAttendanceIn = () => {
     Axios.get(
       `${API_HOST.url}/student/${searchInput}/from/attendance/${attendanceData._id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accountData.token}`,
+        },
+      },
     )
       .then(r => {
         setData(r.data.data);
         setIsLoading(false);
       })
-      .catch(() => {
+      .catch(e => {
         setIsLoading(false);
-        showToast('Gagal mendapatkan data!', 'danger');
+        generateError(e, navigation);
       });
   };
 
   const onAttendanceOut = () => {
     Axios.get(
       `${API_HOST.url}/transaction/from/student/${searchInput}/attendance/${attendanceData._id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accountData.token}`,
+        },
+      },
     )
       .then(r => {
         setData(r.data.data);
         setIsLoading(false);
       })
-      .catch(() => {
+      .catch(e => {
         setIsLoading(false);
-        showToast('Gagal mendapatkan data!', 'danger');
+        generateError(e, navigation);
       });
   };
 
   const onSubmit = () => {
+    if (searchInput.length < 3) {
+      return showToast('Minimal 3 huruf untuk mencari nama maba!', 'info');
+    }
+
     setIsLoading(true);
     if (searchInput) {
       if (attendanceType === 'Datang') {
@@ -143,10 +159,11 @@ const Manual = ({route}) => {
                 group={item.student.group}
                 vaccineCount={item.student.vaccine.count}
                 studentId={item.student._id}
-                assigneeId={accountData.user._id}
                 attendanceId={attendanceData._id}
                 transaction={item.transaction[0]}
                 attendanceType={attendanceType}
+                accountData={accountData}
+                navigation={navigation}
               />
               <View style={{marginTop: 28}} />
             </View>

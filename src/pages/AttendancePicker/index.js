@@ -12,7 +12,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import {MadeByCoder} from '../../assets/icon';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {Loading} from '../../components';
-import {showToast} from '../../utils';
+import {generateError, getData} from '../../utils';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
 
@@ -39,15 +39,21 @@ const AttendancePicker = () => {
   useFocusEffect(
     useCallback(() => {
       setIsLoading(true);
-      Axios.get(`${API_HOST.url}/attendance/all`)
-        .then(item => {
-          setDataAttendance(item.data.data);
-          setIsLoading(false);
+      getData('user').then(r => {
+        Axios.get(`${API_HOST.url}/attendance/all`, {
+          headers: {
+            Authorization: `Bearer ${r.token}`,
+          },
         })
-        .catch(e => {
-          setIsLoading(false);
-          showToast('Error from API', 'danger');
-        });
+          .then(item => {
+            setDataAttendance(item.data.data);
+            setIsLoading(false);
+          })
+          .catch(e => {
+            setIsLoading(false);
+            generateError(e, navigation);
+          });
+      });
     }, []),
   );
 

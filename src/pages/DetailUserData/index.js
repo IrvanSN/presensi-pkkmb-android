@@ -13,11 +13,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import {ChevronBottom} from '../../assets/icon';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
-import {showToast} from '../../utils';
+import {generateError, showToast} from '../../utils';
 import {useNavigation} from '@react-navigation/native';
 
 const DetailUserData = ({route}) => {
-  const {userData, attendanceData, groupData, type} = route.params;
+  const {accountData, userData, attendanceData, groupData, type} = route.params;
   const navigation = useNavigation();
   const [name, setName] = useState(userData.name);
   const [vaccineCount, setVaccineCount] = useState(
@@ -60,14 +60,16 @@ const DetailUserData = ({route}) => {
         vaccineCount,
       };
 
-      Axios.put(`${API_HOST.url}/student/${userData._id}/update`, data)
+      Axios.put(`${API_HOST.url}/student/${userData._id}/update`, data, {
+        headers: {
+          Authorization: `Bearer ${accountData.token}`,
+        },
+      })
         .then(r => {
           navigation.goBack();
           showToast(`Berhasil update data ${r.data.data.name}!`, 'success');
         })
-        .catch(e => {
-          showToast('Gagal update data!', 'danger');
-        });
+        .catch(e => generateError(e, navigation));
     } else {
       const data = {
         name,
@@ -76,15 +78,16 @@ const DetailUserData = ({route}) => {
         vaccineProof,
       };
 
-      Axios.post(`${API_HOST.url}/student/add`, data)
+      Axios.post(`${API_HOST.url}/student/add`, data, {
+        headers: {
+          Authorization: `Bearer ${accountData.token}`,
+        },
+      })
         .then(r => {
           navigation.goBack();
           showToast(`Berhasil tambah data ${r.data.data.name}!`, 'success');
         })
-        .catch(e => {
-          console.log(e);
-          showToast('Gagal tambah data!', 'danger');
-        });
+        .catch(e => generateError(e, navigation));
     }
   };
 
@@ -164,6 +167,7 @@ const DetailUserData = ({route}) => {
           }}
           value={vaccineCount}
           onChangeText={value => setVaccineCount(value)}
+          keyboardType="numeric"
         />
         <Text style={styles.inputTextLabel}>Bukti vaksin</Text>
         <TextInput

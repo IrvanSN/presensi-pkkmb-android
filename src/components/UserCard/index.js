@@ -5,7 +5,14 @@ import {useNavigation} from '@react-navigation/native';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
 
-const UserCard = ({id, name, vaccineCount, groupName, onPressChangeData}) => {
+const UserCard = ({
+  id,
+  name,
+  vaccineCount,
+  groupName,
+  onPressChangeData,
+  accountData,
+}) => {
   const navigation = useNavigation();
   const [clickCount, setClickCount] = useState(0);
 
@@ -16,7 +23,15 @@ const UserCard = ({id, name, vaccineCount, groupName, onPressChangeData}) => {
 
     setClickCount(clickCount + 1);
     if (clickCount === 3) {
-      Axios.delete(`${API_HOST.url}/student/${id}/delete`, {group: groupName})
+      Axios.delete(
+        `${API_HOST.url}/student/${id}/delete`,
+        {group: groupName},
+        {
+          headers: {
+            Authorization: `Bearer ${accountData.token}`,
+          },
+        },
+      )
         .then(r => {
           navigation.goBack();
           showToast(`Berhasil hapus data ${r.data.data.name}!`, 'success');

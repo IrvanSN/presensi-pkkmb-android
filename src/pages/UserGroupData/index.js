@@ -16,7 +16,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 const UserGroupData = ({route}) => {
   const navigation = useNavigation();
-  const {attendanceData} = route.params;
+  const {attendanceData, accountData} = route.params;
   const [data, setData] = useState([]);
   const [isClickSearchButton, setIsClickSearchButton] = useState(false);
   const [dataMatch, setDataMatch] = useState([]);
@@ -41,7 +41,11 @@ const UserGroupData = ({route}) => {
   useFocusEffect(
     useCallback(() => {
       setIsLoading(true);
-      Axios.get(`${API_HOST.url}/student/count/from/group`)
+      Axios.get(`${API_HOST.url}/student/count/from/group`, {
+        headers: {
+          Authorization: `Bearer ${accountData.token}`,
+        },
+      })
         .then(r => {
           setIsLoading(false);
           setData(r.data.data);
@@ -105,6 +109,7 @@ const UserGroupData = ({route}) => {
                         attendanceData,
                         groupName: item.groupName,
                         groupData: data,
+                        accountData,
                       })
                     }
                   />
@@ -121,6 +126,7 @@ const UserGroupData = ({route}) => {
                         attendanceData,
                         groupName: item.groupName,
                         groupData: data,
+                        accountData,
                       })
                     }
                   />

@@ -12,11 +12,11 @@ import {
 } from '../../components';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
-import {showToast} from '../../utils';
+import {generateError} from '../../utils';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
 const UserData = ({route}) => {
-  const {groupData, attendanceData, groupName} = route.params;
+  const {groupData, attendanceData, groupName, accountData} = route.params;
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -42,14 +42,22 @@ const UserData = ({route}) => {
   useFocusEffect(
     useCallback(() => {
       setIsLoading(true);
-      Axios.post(`${API_HOST.url}/student/all/from/group`, {group: groupName})
+      Axios.post(
+        `${API_HOST.url}/student/all/from/group`,
+        {group: groupName},
+        {
+          headers: {
+            Authorization: `Bearer ${accountData.token}`,
+          },
+        },
+      )
         .then(r => {
           setData(r.data.data);
           setIsLoading(false);
         })
         .catch(e => {
           setIsLoading(false);
-          showToast(`Error: ${e}`, 'danger');
+          generateError(e, navigation);
         });
     }, []),
   );
@@ -103,11 +111,13 @@ const UserData = ({route}) => {
                   vaccineCount={item.vaccine.count}
                   id={item._id}
                   key={item._id}
+                  accountData={accountData}
                   onPressChangeData={() =>
                     navigation.navigate('DetailUserData', {
                       userData: item,
                       attendanceData,
                       groupData,
+                      accountData,
                       type: 'updateData',
                     })
                   }
@@ -125,6 +135,7 @@ const UserData = ({route}) => {
                       userData: item,
                       attendanceData,
                       groupData,
+                      accountData,
                       type: 'updateData',
                     })
                   }
@@ -137,6 +148,7 @@ const UserData = ({route}) => {
               navigation.navigate('DetailUserData', {
                 attendanceData,
                 groupData,
+                accountData,
                 userData: {
                   _id: '',
                   name: '',

@@ -3,13 +3,14 @@ import {useFonts} from 'expo-font';
 import {HistoryCard, Loading, NavigatorTab} from '../../components';
 import {Linking, ScrollView, StyleSheet, View} from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
-import {showToast} from '../../utils';
+import {generateError} from '../../utils';
 
 const History = ({route}) => {
-  const {attendanceData} = route.params;
+  const navigation = useNavigation();
+  const {attendanceData, accountData} = route.params;
   const [listAttendance, setListAttendance] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [fontsLoaded] = useFonts({
@@ -31,14 +32,18 @@ const History = ({route}) => {
   useFocusEffect(
     useCallback(() => {
       setIsLoading(true);
-      Axios.get(`${API_HOST.url}/attendance/all`)
+      Axios.get(`${API_HOST.url}/attendance/all`, {
+        headers: {
+          Authorization: `Bearer ${accountData.token}`,
+        },
+      })
         .then(item => {
           setListAttendance(item.data.data);
           setIsLoading(false);
         })
         .catch(e => {
           setIsLoading(false);
-          showToast('Error from API', 'danger');
+          generateError(e, navigation);
         });
     }, []),
   );
@@ -55,7 +60,11 @@ const History = ({route}) => {
 
   const onPressDownload = id => {
     setIsLoading(true);
-    Axios.get(`${API_HOST.url}/attendance/${id}/export/csv`)
+    Axios.get(`${API_HOST.url}/attendance/${id}/export/csv`, {
+      headers: {
+        Authorization: `Bearer ${accountData.token}`,
+      },
+    })
       .then(item => {
         Linking.openURL(API_HOST.url + item.data.data.link).then(() =>
           setIsLoading(false),
@@ -63,7 +72,7 @@ const History = ({route}) => {
       })
       .catch(e => {
         setIsLoading(false);
-        showToast('Error from API', 'danger');
+        generateError(e, navigation);
       });
   };
 

@@ -10,10 +10,12 @@ import {
 import Axios from 'axios';
 import * as SplashScreen from 'expo-splash-screen';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {showToast} from '../../utils';
+import {generateError, showToast} from '../../utils';
+import {useNavigation} from '@react-navigation/native';
 
 const AddUser = ({route}) => {
-  const {attendanceData} = route.params;
+  const navigation = useNavigation();
+  const {attendanceData, accountData} = route.params;
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -66,17 +68,22 @@ const AddUser = ({route}) => {
       password,
     };
 
-    Axios.post(`${API_HOST.url}/kafas/add`, data)
+    Axios.post(`${API_HOST.url}/kafas/add`, data, {
+      headers: {
+        Authorization: `Bearer ${accountData.token}`,
+      },
+    })
       .then(r => {
         setIsLoading(false);
         showToast(
           `Berhasil membuat akun kafas ${r.data.data.username}!`,
           'success',
         );
+        navigation.goBack();
       })
       .catch(e => {
         setIsLoading(false);
-        showToast(e.response.data.message, 'danger');
+        generateError(e, navigation);
       });
 
     setName('');

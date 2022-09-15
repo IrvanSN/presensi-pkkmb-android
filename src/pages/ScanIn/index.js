@@ -13,7 +13,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import {BarCodeScanner} from 'expo-barcode-scanner';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
-import {showToast} from '../../utils';
+import {generateError, showToast} from '../../utils';
 import {useNavigation} from '@react-navigation/native';
 
 const ScanIn = ({route}) => {
@@ -57,7 +57,11 @@ const ScanIn = ({route}) => {
       status: 'Hadir',
     };
 
-    Axios.post(`${API_HOST.url}/transaction/in`, payload)
+    Axios.post(`${API_HOST.url}/transaction/in`, payload, {
+      headers: {
+        Authorization: `Bearer ${accountData.token}`,
+      },
+    })
       .then(r => {
         setIsLoading(false);
         showToast(
@@ -67,7 +71,7 @@ const ScanIn = ({route}) => {
       })
       .catch(e => {
         setIsLoading(false);
-        showToast('Gagal melakukan absensi!', 'danger');
+        generateError(e, navigation);
       });
   };
 

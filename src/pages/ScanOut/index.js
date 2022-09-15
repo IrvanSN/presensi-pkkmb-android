@@ -14,7 +14,7 @@ import {BarCodeScanner} from 'expo-barcode-scanner';
 import {useNavigation} from '@react-navigation/native';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
-import {showToast} from '../../utils';
+import {generateError, showToast} from '../../utils';
 
 const ScanIn = ({route}) => {
   const {attendanceData, accountData} = route.params;
@@ -55,7 +55,11 @@ const ScanIn = ({route}) => {
       attendanceId: attendanceData._id,
     };
 
-    Axios.put(`${API_HOST.url}/transaction/out`, payload)
+    Axios.put(`${API_HOST.url}/transaction/out`, payload, {
+      headers: {
+        Authorization: `Bearer ${accountData.token}`,
+      },
+    })
       .then(r => {
         setIsLoading(false);
         showToast(
@@ -65,7 +69,7 @@ const ScanIn = ({route}) => {
       })
       .catch(e => {
         setIsLoading(false);
-        showToast('Gagal melakukan absensi!', 'danger');
+        generateError(e, navigation);
       });
   };
 
