@@ -90,7 +90,10 @@ const UserGroupData = ({route}) => {
           />
           <SearchButton onPress={onSubmit} />
         </View>
-        <ScrollView style={styles.collectionWrapper}>
+        <ScrollView>
+          <View
+            style={{backgroundColor: 'rgba(255, 0, 0, 0)', marginVertical: 7.5}}
+          />
           {isClickSearchButton
             ? dataMatch.map(item => (
                 <View key={item.groupId}>
@@ -149,10 +152,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     height: 50,
     paddingHorizontal: 15,
-    marginBottom: 15,
-  },
-  collectionWrapper: {
-    paddingTop: 5,
+    marginBottom: 5,
   },
   gap: {marginTop: 28},
 });

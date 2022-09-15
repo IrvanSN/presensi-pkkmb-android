@@ -92,6 +92,9 @@ const UserData = ({route}) => {
           <SearchButton onPress={onSubmit} />
         </View>
         <ScrollView style={styles.collectionWrapper}>
+          <View
+            style={{backgroundColor: 'rgba(255, 0, 0, 0)', marginVertical: 7.5}}
+          />
           {isClickSearchButton
             ? dataMatch.map(item => (
                 <UserCard
@@ -160,22 +163,21 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 50,
   },
+  navigatorWrapper: {
+    paddingHorizontal: 15,
+  },
+  buttonWrapper: {
+    marginHorizontal: 15,
+  },
   searchSection: {
     flexDirection: 'row',
     marginTop: 20,
     height: 50,
     paddingHorizontal: 15,
-    marginBottom: 15,
-  },
-  buttonWrapper: {
-    marginHorizontal: 15,
+    marginBottom: 5,
   },
   collectionWrapper: {
     flex: 1,
-    paddingTop: 5,
     marginBottom: 70,
-  },
-  navigatorWrapper: {
-    paddingHorizontal: 15,
   },
 });

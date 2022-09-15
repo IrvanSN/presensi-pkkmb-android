@@ -124,7 +124,10 @@ const Manual = ({route}) => {
             }}
           />
         </View>
-        <ScrollView style={styles.collectionWrapper}>
+        <ScrollView>
+          <View
+            style={{backgroundColor: 'rgba(255, 0, 0, 0)', marginVertical: 7.5}}
+          />
           {data.length === 0 && (
             <View style={styles.wrapperImage}>
               <Image
@@ -172,7 +175,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection: 'row',
     marginHorizontal: 15,
-    marginBottom: 15,
+    marginBottom: 5,
   },
   searchSection: {
     flexDirection: 'row',
@@ -180,9 +183,6 @@ const styles = StyleSheet.create({
     height: 50,
     paddingHorizontal: 15,
     marginBottom: 10,
-  },
-  collectionWrapper: {
-    paddingTop: 5,
   },
   gap: {marginTop: 28},
   wrapperImage: {

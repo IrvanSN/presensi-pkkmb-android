@@ -175,7 +175,7 @@ const DetailUserData = ({route}) => {
       <View style={styles.actionButton}>
         <ActionButton
           onPress={onSubmit}
-          title={type === 'updateMaba' ? 'Simpan' : 'Tambah'}
+          title="Simpan"
           addButtonStyles={{position: 'absolute'}}
         />
       </View>

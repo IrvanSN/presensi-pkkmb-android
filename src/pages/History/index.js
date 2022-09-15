@@ -73,7 +73,10 @@ const History = ({route}) => {
         <View style={styles.navigatorWrapper}>
           <NavigatorTab date={attendanceData.title} title="Histori" />
         </View>
-        <ScrollView style={styles.collectionWrapper}>
+        <ScrollView>
+          <View
+            style={{backgroundColor: 'rgba(255, 0, 0, 0)', marginVertical: 7.5}}
+          />
           {listAttendance.map(item => (
             <HistoryCard
               key={item._id}
@@ -97,9 +100,9 @@ const styles = StyleSheet.create({
   },
   navigatorWrapper: {
     marginHorizontal: 15,
+    marginBottom: 5,
   },
   collectionWrapper: {
     flex: 1,
-    marginTop: 20,
   },
 });
