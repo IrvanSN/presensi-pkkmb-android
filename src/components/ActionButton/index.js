@@ -1,13 +1,13 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-const ActionButton = ({onPress, title}) => {
+const ActionButton = ({onPress, title, addButtonStyles}) => {
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={onPress}
-        style={styles.buttonStyles}>
+        style={{...addButtonStyles, ...styles.buttonStyles}}>
         <Text style={styles.text}>{title}</Text>
       </TouchableOpacity>
     </View>
@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonStyles: {
-    alignItems: 'center' ,
-    position: 'absolute',
+    alignItems: 'center',
+    // position: 'absolute',
     left: 0,
     right: 0,
     bottom: 10,

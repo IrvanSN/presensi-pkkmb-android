@@ -135,6 +135,7 @@ const UserData = ({route}) => {
               })
             }
             title="Tambah MABA"
+            addButtonStyles={{position: 'absolute'}}
           />
         </View>
       </View>
