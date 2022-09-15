@@ -9,6 +9,7 @@ import UserGroupCard from './UserGroupCard';
 import SearchButton from './SearchButton';
 import BasicButton from './BasicButton';
 import UserCard from './UserCard';
+import HistoryCard from './HistoryCard';
 
 export {
   ActionButton,
@@ -22,4 +23,5 @@ export {
   SearchButton,
   BasicButton,
   UserCard,
+  HistoryCard,
 };

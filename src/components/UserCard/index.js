@@ -33,6 +33,7 @@ const UserCard = ({id, name, vaccineCount, groupName, onPressChangeData}) => {
       );
     }
   };
+
   return (
     <View style={styles.wrapper}>
       <Text style={styles.nameText}>{name}</Text>

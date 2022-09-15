@@ -10,7 +10,7 @@ import {
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {MadeByCoder} from '../../assets/icon';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {Loading} from '../../components';
 import {showToast} from '../../utils';
 import Axios from 'axios';
@@ -29,10 +29,16 @@ const AttendancePicker = () => {
   });
 
   useEffect(() => {
-    setIsLoading(true);
-
     async function prepare() {
       await SplashScreen.preventAutoHideAsync();
+    }
+
+    prepare();
+  }, [fontsLoaded]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsLoading(true);
       Axios.get(`${API_HOST.url}/attendance/all`)
         .then(item => {
           setDataAttendance(item.data.data);
@@ -42,10 +48,8 @@ const AttendancePicker = () => {
           setIsLoading(false);
           showToast('Error from API', 'danger');
         });
-    }
-
-    prepare();
-  }, [fontsLoaded]);
+    }, []),
+  );
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {

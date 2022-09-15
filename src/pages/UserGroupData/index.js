@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {
-  ActionButton,
   Loading,
   NavigatorTab,
   SearchButton,
@@ -18,7 +17,6 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 const UserGroupData = ({route}) => {
   const navigation = useNavigation();
   const {attendanceData} = route.params;
-  const [accountData, setAccountData] = useState({});
   const [data, setData] = useState([]);
   const [isClickSearchButton, setIsClickSearchButton] = useState(false);
   const [dataMatch, setDataMatch] = useState([]);
