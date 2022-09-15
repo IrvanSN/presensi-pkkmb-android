@@ -52,12 +52,13 @@ const ManualCard = ({
       const data = {
         studentId,
         attendanceId,
+        status: changedStatus,
       };
 
       Axios.put(`${API_HOST.url}/transaction/out`, data)
         .then(r =>
           showToast(
-            `${r.data.code}: Berhasil mengubah presensi pulang ${r.data.data.student.name}`,
+            `${r.data.code}: Berhasil mengubah presensi pulang ${r.data.data.student.name} menjadi ${changedStatus}`,
             'success',
           ),
         )
@@ -122,20 +123,14 @@ const ManualCard = ({
               width: 77,
               height: 26,
               borderRadius: 10,
-              // borderBottomRightRadius: showItemDropdown ? 0 : 10,
-              // borderBottomLeftRadius: showItemDropdown ? 0 : 10,
             }}
             activeOpacity={0.7}
-            onPress={() => isAlreadyOut === 'Belum' && onChangeStatus('Sudah')}>
+            onPress={() =>
+              isAlreadyOut === 'Belum'
+                ? onChangeStatus('Sudah')
+                : onChangeStatus('Belum')
+            }>
             <Text style={styles.statusText}>{isAlreadyOut}</Text>
-            {/*<View*/}
-            {/*  style={{*/}
-            {/*    justifyContent: 'center',*/}
-            {/*    alignItems: 'center',*/}
-            {/*    marginLeft: 4,*/}
-            {/*  }}>*/}
-            {/*  {showItemDropdown ? <ChevronUp /> : <ChevronBottom />}*/}
-            {/*</View>*/}
           </TouchableOpacity>
         )}
         {attendanceType === 'Datang'
@@ -185,14 +180,6 @@ const ManualCard = ({
                     <Text style={styles.statusText}>Sudah</Text>
                   </TouchableOpacity>
                 )}
-                {/*{isAlreadyOut !== 'Belum' && (*/}
-                {/*  <TouchableOpacity*/}
-                {/*    style={styles.button}*/}
-                {/*    activeOpacity={0.7}*/}
-                {/*    onPress={() => onChangeStatus('Belum')}>*/}
-                {/*    <Text style={styles.statusText}>Belum</Text>*/}
-                {/*  </TouchableOpacity>*/}
-                {/*)}*/}
               </View>
             )}
       </View>
@@ -204,8 +191,6 @@ export default ManualCard;
 
 const styles = StyleSheet.create({
   dropdownItem: {
-    // marginTop: 26,
-    // position: 'absolute',
     backgroundColor: '#BC011E',
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10,
