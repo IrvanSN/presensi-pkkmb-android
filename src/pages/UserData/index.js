@@ -105,6 +105,7 @@ const UserData = ({route}) => {
                       userData: item,
                       attendanceData,
                       groupData,
+                      type: 'updateData',
                     })
                   }
                 />
@@ -121,6 +122,7 @@ const UserData = ({route}) => {
                       userData: item,
                       attendanceData,
                       groupData,
+                      type: 'updateData',
                     })
                   }
                 />
@@ -132,9 +134,16 @@ const UserData = ({route}) => {
               navigation.navigate('DetailUserData', {
                 attendanceData,
                 groupData,
+                userData: {
+                  _id: '',
+                  name: '',
+                  group: groupName,
+                  vaccine: {count: 0, proof: ''},
+                },
+                type: 'addData',
               })
             }
-            title="Tambah MABA"
+            title="Tambah Maba"
             addButtonStyles={{position: 'absolute'}}
           />
         </View>

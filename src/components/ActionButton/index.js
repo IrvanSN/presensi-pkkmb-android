@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
   },
   buttonStyles: {
     alignItems: 'center',
-    // position: 'absolute',
     left: 0,
     right: 0,
     bottom: 10,

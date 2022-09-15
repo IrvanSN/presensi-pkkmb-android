@@ -93,7 +93,6 @@ const AddUser = ({route}) => {
         </View>
         <ScrollView>
           <View style={styles.formWrapper}>
-            <View style={{marginTop: 20}}/>
             <TextInputComponent
               placeholder="Masukkan Nama"
               isPasswordInput={false}
@@ -127,7 +126,11 @@ const AddUser = ({route}) => {
             />
           </View>
         </ScrollView>
-        <ActionButton onPress={onSubmit} title="Simpan" />
+        <ActionButton
+          onPress={onSubmit}
+          title="Tambah"
+          addButtonStyles={{position: 'absolute'}}
+        />
       </View>
       {isLoading && <Loading />}
     </>
@@ -142,8 +145,8 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     marginHorizontal: 15,
   },
-  buttonWrapper: {
-    position: 'fixed'
+  scrollViewStyle: {
+    marginBottom: 70,
   },
   formWrapper: {
     flex: 1,

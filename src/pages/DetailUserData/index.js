@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -17,13 +16,14 @@ import {API_HOST} from '../../config';
 import {showToast} from '../../utils';
 import {useNavigation} from '@react-navigation/native';
 
-const DetailUserData = ({route, type}) => {
-  const {userData, attendanceData, groupData} = route.params;
+const DetailUserData = ({route}) => {
+  const {userData, attendanceData, groupData, type} = route.params;
   const navigation = useNavigation();
   const [name, setName] = useState(userData.name);
   const [vaccineCount, setVaccineCount] = useState(
     userData.vaccine.count.toString(),
   );
+  const [vaccineProof, setVaccineProof] = useState(userData.vaccine.proof);
   const [selectedGroupName, setSelectedGroupName] = useState(userData.group);
   const [isDropdownClick, setIsDropdownClick] = useState(false);
   const [fontsLoaded] = useFonts({
@@ -53,26 +53,48 @@ const DetailUserData = ({route, type}) => {
   }
 
   const onSubmit = () => {
-    const data = {
-      name,
-      group: selectedGroupName,
-      vaccineCount,
-    };
+    if (type === 'updateData') {
+      const data = {
+        name,
+        group: selectedGroupName,
+        vaccineCount,
+      };
 
-    Axios.put(`${API_HOST.url}/student/${userData._id}/update`, data)
-      .then(r => {
-        navigation.goBack();
-        showToast(`Berhasil update data ${r.data.data.name}!`, 'success');
-      })
-      .catch(e => {
-        showToast('Gagal update data!', 'danger');
-      });
+      Axios.put(`${API_HOST.url}/student/${userData._id}/update`, data)
+        .then(r => {
+          navigation.goBack();
+          showToast(`Berhasil update data ${r.data.data.name}!`, 'success');
+        })
+        .catch(e => {
+          showToast('Gagal update data!', 'danger');
+        });
+    } else {
+      const data = {
+        name,
+        group: selectedGroupName,
+        vaccineCount,
+        vaccineProof,
+      };
+
+      Axios.post(`${API_HOST.url}/student/add`, data)
+        .then(r => {
+          navigation.goBack();
+          showToast(`Berhasil tambah data ${r.data.data.name}!`, 'success');
+        })
+        .catch(e => {
+          console.log(e);
+          showToast('Gagal tambah data!', 'danger');
+        });
+    }
   };
 
   return (
     <View style={styles.wrapper} onLayout={onLayoutRootView}>
       <View style={styles.navigatorWrapper}>
-        <NavigatorTab date={attendanceData.title} title="Ubah data maba" />
+        <NavigatorTab
+          date={attendanceData.title}
+          title={type === 'updateData' ? 'Ubah data maba' : 'Tambah data maba'}
+        />
       </View>
       <ScrollView nestedScrollEnabled={true} style={styles.bodyWrapper}>
         <Text style={styles.inputTextLabel}>Nama Lengkap</Text>
@@ -144,23 +166,19 @@ const DetailUserData = ({route, type}) => {
           onChangeText={value => setVaccineCount(value)}
         />
         <Text style={styles.inputTextLabel}>Bukti vaksin</Text>
-        <Image
-          style={styles.vaccineProof}
-          source={{
-            uri: userData.vaccine.proof,
-          }}
+        <TextInput
+          style={styles.inputText}
+          value={vaccineProof}
+          onChangeText={value => setVaccineProof(value)}
         />
-        <Text style={{marginTop: 20, ...styles.inputTextLabel}}>QR Code</Text>
-        <Image
-          style={styles.vaccineProof}
-          source={{
-            uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${userData._id}`,
-          }}
-        />
-        <View style={styles.actionButton}>
-          <ActionButton onPress={onSubmit} title="Simpan" />
-        </View>
       </ScrollView>
+      <View style={styles.actionButton}>
+        <ActionButton
+          onPress={onSubmit}
+          title={type === 'updateMaba' ? 'Simpan' : 'Tambah'}
+          addButtonStyles={{position: 'absolute'}}
+        />
+      </View>
     </View>
   );
 };
@@ -171,13 +189,11 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     paddingTop: 50,
-  },
-  navigatorWrapper: {
     paddingHorizontal: 15,
   },
   bodyWrapper: {
     marginTop: 20,
-    paddingHorizontal: 15,
+    marginBottom: 70,
   },
   inputTextLabel: {
     fontFamily: 'Montserrat-Regular',
@@ -238,9 +254,5 @@ const styles = StyleSheet.create({
     color: 'black',
     fontFamily: 'Montserrat-Regular',
     fontSize: 14,
-  },
-  actionButton: {
-    marginTop: 30,
-    marginBottom: 20,
   },
 });
