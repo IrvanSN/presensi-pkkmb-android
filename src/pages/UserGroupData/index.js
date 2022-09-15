@@ -127,16 +127,6 @@ const UserGroupData = ({route}) => {
                 </View>
               ))}
         </ScrollView>
-        <View style={styles.buttonWrapper}>
-          <ActionButton
-            onPress={() =>
-              navigation.navigate('DetailUserData', {
-                attendanceData,
-                accountData,
-            })}
-            title="Tambah MABA"
-          />
-        </View>
       </View>
       {isLoading && <Loading />}
     </>
@@ -165,7 +155,6 @@ const styles = StyleSheet.create({
   },
   collectionWrapper: {
     paddingTop: 5,
-    marginBottom: 70,
   },
   gap: {marginTop: 28},
 });

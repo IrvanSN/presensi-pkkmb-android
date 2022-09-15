@@ -3,6 +3,7 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {
+  ActionButton,
   Loading,
   NavigatorTab,
   SearchButton,
@@ -125,6 +126,17 @@ const UserData = ({route}) => {
                 />
               ))}
         </ScrollView>
+        <View style={styles.buttonWrapper}>
+          <ActionButton
+            onPress={() =>
+              navigation.navigate('DetailUserData', {
+                attendanceData,
+                groupData,
+              })
+            }
+            title="Tambah MABA"
+          />
+        </View>
       </View>
       {isLoading && <Loading />}
     </>
@@ -145,9 +157,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginBottom: 15,
   },
+  buttonWrapper: {
+    marginHorizontal: 15,
+  },
   collectionWrapper: {
     flex: 1,
     paddingTop: 5,
+    marginBottom: 70,
   },
   navigatorWrapper: {
     paddingHorizontal: 15,
