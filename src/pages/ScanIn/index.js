@@ -10,17 +10,18 @@ import {
 } from 'react-native';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import {BarCodeScanner} from 'expo-barcode-scanner';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
 import {generateError, showToast} from '../../utils';
 import {useNavigation} from '@react-navigation/native';
+import {Camera, CameraType} from 'expo-camera';
 
 const ScanIn = ({route}) => {
   const {attendanceData, accountData} = route.params;
   const navigation = useNavigation();
   const [scanned, setScanned] = useState(false);
-  const [hasPermission, setHasPermission] = useState(null);
+  const [type, setType] = useState(CameraType.back);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
   const [isLoading, setIsLoading] = useState(false);
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),
@@ -33,8 +34,7 @@ const ScanIn = ({route}) => {
   useEffect(() => {
     async function prepare() {
       await SplashScreen.preventAutoHideAsync();
-      const {status} = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      requestPermission();
     }
 
     prepare();
@@ -73,17 +73,21 @@ const ScanIn = ({route}) => {
         setIsLoading(false);
         generateError(e, navigation);
       });
+
+    setTimeout(() => {
+      setScanned(false);
+    }, 2000);
   };
 
   if (!fontsLoaded) {
     return null;
   }
-  if (hasPermission === null) {
+  if (!permission) {
     return null;
   }
-  if (hasPermission === false) {
+  if (!permission.granted) {
     Linking.openSettings();
-    return navigation.reset({index: 0, routes: [{name: 'Dashboard'}]});
+    return navigation.goBack();
   }
 
   return (
@@ -93,27 +97,48 @@ const ScanIn = ({route}) => {
           <NavigatorTab date={attendanceData.title} title="Absensi Datang" />
         </View>
         <View style={styles.scannerBox}>
-          <BarCodeScanner
-            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-            style={styles.scanner}
+          <Camera
+            type={type}
+            style={{flex: 1}}
+            onBarCodeScanned={scanned ? null : handleBarCodeScanned}
           />
         </View>
-        <View style={styles.footerScanner}>
-          {scanned ? (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles.buttonReScan}
-              onPress={() => setScanned(false)}>
-              <Text style={styles.reScanText}>Scan Ulang</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles.buttonReScanDisabled}
-              onPress={() => setScanned(false)}>
-              <Text style={styles.reScanTextDisabled}>Scanning..</Text>
-            </TouchableOpacity>
-          )}
+        <View style={styles.footer}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={{
+              backgroundColor: type === CameraType.front ? '#BC011E' : 'white',
+              borderColor: type === CameraType.front ? '' : '#87898E',
+              borderWidth: type === CameraType.front ? 0 : 1,
+              ...styles.buttonSelectCamera,
+            }}
+            onPress={() => setType(CameraType.front)}>
+            <Text
+              style={{
+                color: type === CameraType.front ? 'white' : '#87898E',
+                ...styles.textButton,
+              }}>
+              Kamera Depan
+            </Text>
+          </TouchableOpacity>
+          <View style={{marginHorizontal: 5}} />
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={{
+              backgroundColor: type === CameraType.back ? '#BC011E' : 'white',
+              borderColor: type === CameraType.back ? '' : '#87898E',
+              borderWidth: type === CameraType.back ? 0 : 1,
+              ...styles.buttonSelectCamera,
+            }}
+            onPress={() => setType(CameraType.back)}>
+            <Text
+              style={{
+                color: type === CameraType.back ? 'white' : '#87898E',
+                ...styles.textButton,
+              }}>
+              Kamera Belakang
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
       {isLoading && <Loading />}
@@ -140,40 +165,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#F5F5F5',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height - 200,
+    height: Dimensions.get('window').height - 210,
     marginBottom: 25,
     overflow: 'hidden',
   },
-  footerScanner: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonReScan: {
-    backgroundColor: '#BC011E',
-    width: 130,
+  buttonSelectCamera: {
+    flex: 1,
     height: 45,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
-    marginBottom: 30,
   },
-  buttonReScanDisabled: {
-    backgroundColor: 'white',
-    width: 130,
-    height: 45,
+  footer: {
+    flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 20,
-    borderWidth: 1.5,
-    borderColor: '#87898E',
-    marginBottom: 30,
+    marginHorizontal: 15,
   },
-  reScanText: {
-    color: 'white',
-    fontFamily: 'Montserrat-SemiBold',
-  },
-  reScanTextDisabled: {
-    color: '#87898E',
-    fontFamily: 'Montserrat-SemiBold',
+  textButton: {
+    fontFamily: 'Montserrat-Regular',
   },
 });

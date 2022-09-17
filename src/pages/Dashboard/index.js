@@ -7,7 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {CardMenu, Loading, NavigatorTab, StatusCount} from '../../components';
+import {
+  CameraPicker,
+  CardMenu,
+  Loading,
+  NavigatorTab,
+  StatusCount,
+} from '../../components';
 import {useFonts} from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {generateError, getData, removeItem, showToast} from '../../utils';
@@ -17,6 +23,7 @@ import {API_HOST} from '../../config';
 const Dashboard = ({route}) => {
   const {attendanceData} = route.params;
   const navigation = useNavigation();
+  const [isCameraPick, setIsCameraPick] = useState(false);
   const [accountData, setAccountData] = useState({});
   const [countStatus, setCountStatus] = useState({
     hadir: 0,
@@ -180,6 +187,12 @@ const Dashboard = ({route}) => {
         </View>
       </ScrollView>
       {isLoading && <Loading />}
+      {isCameraPick && (
+        <CameraPicker
+          attendanceData={attendanceData}
+          accountData={accountData}
+        />
+      )}
     </>
   );
 };
