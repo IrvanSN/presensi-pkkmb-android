@@ -108,6 +108,7 @@ const UserData = ({route}) => {
                 <UserCard
                   groupName={item.group}
                   name={item.name}
+                  prodi={item.prodi}
                   vaccineCount={item.vaccine.count}
                   id={item._id}
                   key={item._id}
@@ -127,6 +128,7 @@ const UserData = ({route}) => {
                 <UserCard
                   groupName={item.group}
                   name={item.name}
+                  prodi={item.prodi}
                   vaccineCount={item.vaccine.count}
                   id={item._id}
                   key={item._id}

@@ -12,6 +12,7 @@ const UserCard = ({
   groupName,
   onPressChangeData,
   accountData,
+  prodi,
 }) => {
   const navigation = useNavigation();
   const [clickCount, setClickCount] = useState(0);
@@ -47,7 +48,8 @@ const UserCard = ({
       <View style={styles.descriptionWrapper}>
         <Text style={styles.descriptionText}>Id: {id}</Text>
         <Text style={styles.descriptionText}>Vaksin ke-{vaccineCount}</Text>
-        <Text style={styles.descriptionText}>Kelompok: {groupName}</Text>
+        <Text style={styles.descriptionText}>Prodi: {prodi}</Text>
+        <Text style={styles.descriptionText}>Laskar: {groupName}</Text>
       </View>
       <View style={styles.buttonWrapper}>
         <TouchableOpacity

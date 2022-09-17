@@ -8,6 +8,7 @@ import {generateError, showToast} from '../../utils';
 const ManualCard = ({
   name,
   group,
+  prodi,
   vaccineCount,
   studentId,
   attendanceId,
@@ -75,6 +76,7 @@ const ManualCard = ({
       <View>
         <Text style={styles.nameText}>{name}</Text>
         <Text style={styles.descriptionText}>{group}</Text>
+        <Text style={styles.descriptionText}>{prodi}</Text>
         <Text style={styles.descriptionText}>
           Telah melakukan vaksin ke-{vaccineCount}
         </Text>

@@ -82,13 +82,13 @@ const UserGroupData = ({route}) => {
     <>
       <View style={styles.wrapper} onLayout={onLayoutRootView}>
         <View style={styles.navigatorWrapper}>
-          <NavigatorTab date={attendanceData.title} title="Data Kelompok" />
+          <NavigatorTab date={attendanceData.title} title="Data Laskar" />
         </View>
         <View style={styles.searchSection}>
           <TextInputComponent
             type="username"
             isPasswordInput={false}
-            placeholder="Cari nama kelompok"
+            placeholder="Cari nama laskar"
             value={searchInput}
             onChangeText={value => setSearchInput(value)}
           />

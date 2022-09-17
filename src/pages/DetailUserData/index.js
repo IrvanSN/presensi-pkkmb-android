@@ -111,7 +111,7 @@ const DetailUserData = ({route}) => {
           value={name}
           onChangeText={value => setName(value)}
         />
-        <Text style={styles.inputTextLabel}>Kelompok</Text>
+        <Text style={styles.inputTextLabel}>Laskar</Text>
         <View style={styles.groupNameDropdown}>
           <TouchableOpacity
             style={{

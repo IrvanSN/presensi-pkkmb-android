@@ -157,6 +157,7 @@ const Manual = ({route}) => {
               <ManualCard
                 name={item.student.name}
                 group={item.student.group}
+                prodi={item.student.prodi}
                 vaccineCount={item.student.vaccine.count}
                 studentId={item.student._id}
                 attendanceId={attendanceData._id}
