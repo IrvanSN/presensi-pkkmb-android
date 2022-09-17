@@ -11,8 +11,8 @@ import {MadeByCoder} from '../../assets/icon';
 
 export default function SignIn() {
   const navigation = useNavigation();
-  const [username, setUsername] = useState('johndoe');
-  const [password, setPassword] = useState('123hore');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [fontsLoaded] = useFonts({
     'Montserrat-Regular': require('../../assets/fonts/Montserrat-Regular.ttf'),

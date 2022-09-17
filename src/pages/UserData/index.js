@@ -130,6 +130,7 @@ const UserData = ({route}) => {
                   vaccineCount={item.vaccine.count}
                   id={item._id}
                   key={item._id}
+                  accountData={accountData}
                   onPressChangeData={() =>
                     navigation.navigate('DetailUserData', {
                       userData: item,

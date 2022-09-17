@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {showToast} from '../../utils';
+import {generateError, showToast} from '../../utils';
 import {useNavigation} from '@react-navigation/native';
 import Axios from 'axios';
 import {API_HOST} from '../../config';
@@ -17,30 +17,22 @@ const UserCard = ({
   const [clickCount, setClickCount] = useState(0);
 
   const onDeleteData = () => {
-    if (clickCount < 0) {
-      setClickCount(3);
-    }
-
     setClickCount(clickCount + 1);
     if (clickCount === 3) {
-      Axios.delete(
-        `${API_HOST.url}/student/${id}/delete`,
-        {group: groupName},
-        {
-          headers: {
-            Authorization: `Bearer ${accountData.token}`,
-          },
+      Axios.delete(`${API_HOST.url}/student/${id}/delete`, {
+        headers: {
+          Authorization: `Bearer ${accountData.token}`,
         },
-      )
+      })
         .then(r => {
           navigation.goBack();
           showToast(`Berhasil hapus data ${r.data.data.name}!`, 'success');
         })
-        .catch(e => {
-          showToast(`Error: ${e.response.message}`, 'danger');
-        });
+        .catch(e => generateError(e, navigation));
     } else if (clickCount === 0) {
       showToast('Untuk menghapus data klik 3x tombol Hapus Data!', 'info');
+    } else if (3 - clickCount < 0) {
+      return setClickCount(3);
     } else {
       showToast(
         `Klik ${3 - clickCount}x lagi untuk menghapus data!`,

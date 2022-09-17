@@ -58,6 +58,7 @@ const DetailUserData = ({route}) => {
         name,
         group: selectedGroupName,
         vaccineCount,
+        vaccineProof,
       };
 
       Axios.put(`${API_HOST.url}/student/${userData._id}/update`, data, {
@@ -71,6 +72,10 @@ const DetailUserData = ({route}) => {
         })
         .catch(e => generateError(e, navigation));
     } else {
+      if (!(name && selectedGroupName && vaccineCount && vaccineProof)) {
+        return showToast('Lengkapi semua data!', 'info');
+      }
+
       const data = {
         name,
         group: selectedGroupName,
