@@ -18,6 +18,11 @@ export const generateError = (e, navigation) => {
         navigation.reset({index: 0, routes: [{name: 'SignIn'}]});
       });
   } else {
-    showToast(`${e.response.data.code || 500}: API Error`, 'danger');
+    showToast(
+      `${e.response.data.code || 500}: ${
+        e.response.data.message || 'API Error'
+      }`,
+      'danger',
+    );
   }
 };
