@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import {useFonts} from 'expo-font';
@@ -19,6 +20,8 @@ import {Camera, CameraType} from 'expo-camera';
 const ScanIn = ({route}) => {
   const {attendanceData, accountData} = route.params;
   const navigation = useNavigation();
+  const {width} = useWindowDimensions();
+  const height = Math.round((width * 16) / 9);
   const [scanned, setScanned] = useState(false);
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -97,7 +100,11 @@ const ScanIn = ({route}) => {
         <View style={styles.scannerBox}>
           <Camera
             type={type}
-            style={{flex: 1}}
+            ratio="16:9"
+            style={{
+              height: height,
+              width: '100%',
+            }}
             onBarCodeScanned={scanned ? null : handleBarCodeScanned}
           />
         </View>
@@ -154,10 +161,6 @@ const styles = StyleSheet.create({
   navigatorWrapper: {
     paddingHorizontal: 15,
     marginBottom: 30,
-  },
-  scanner: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
   },
   scannerBox: {
     justifyContent: 'center',

@@ -41,13 +41,17 @@ export default function SignIn() {
   }
 
   const onSubmit = () => {
-    setIsLoading(true);
+    if (!(username && password)) {
+      return showToast('Lengkapi username & password!', 'danger');
+    }
+
     const data = {
       username,
       password,
     };
 
     if (username && password) {
+      setIsLoading(true);
       Axios.post(`${API_HOST.url}/auth`, data)
         .then(r => {
           storeData('user', r.data.data);
