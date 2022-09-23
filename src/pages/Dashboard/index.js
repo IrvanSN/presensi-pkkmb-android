@@ -1,6 +1,8 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+  Dimensions,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -23,6 +25,7 @@ import {API_HOST} from '../../config';
 const Dashboard = ({route}) => {
   const {attendanceData} = route.params;
   const navigation = useNavigation();
+  const windowWidth = Dimensions.get('window').width;
   const [isCameraPick, setIsCameraPick] = useState(false);
   const [accountData, setAccountData] = useState({});
   const [countStatus, setCountStatus] = useState({
@@ -99,6 +102,16 @@ const Dashboard = ({route}) => {
     <>
       <ScrollView style={styles.wrapper}>
         <View style={styles.redBox} onLayout={onLayoutRootView}>
+          <Image
+            style={{
+              zIndex: 1,
+              flex: 1,
+              position: 'absolute',
+              alignSelf: 'center',
+              marginTop: 238,
+            }}
+            source={require('../../assets/icon-app/OrnamentUp.png')}
+          />
           <View style={styles.header}>
             <NavigatorTab
               date={attendanceData.title}
@@ -193,6 +206,41 @@ const Dashboard = ({route}) => {
           accountData={accountData}
         />
       )}
+      <View>
+        <Image
+          style={{position: 'absolute', zIndex: 2, bottom: 0, right: 0}}
+          source={require('../../assets/icon-app/OrnamentSide.png')}
+        />
+        <View
+          style={{
+            alignSelf: 'center',
+            width: windowWidth - 93,
+            zIndex: 1,
+            height: 25,
+            backgroundColor: '#333E52',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              color: 'white',
+              fontFamily: 'Montserrat-Bold',
+              fontSize: 12,
+            }}>
+            PKKMB DEWANGKARA MAETALA 2022
+          </Text>
+        </View>
+        <Image
+          style={{
+            position: 'absolute',
+            zIndex: 2,
+            bottom: 0,
+            left: 0,
+            transform: [{scaleX: -1}],
+          }}
+          source={require('../../assets/icon-app/OrnamentSide.png')}
+        />
+      </View>
     </>
   );
 };
@@ -212,7 +260,7 @@ const styles = StyleSheet.create({
   redBox: {
     paddingHorizontal: 15,
     paddingTop: 25,
-    backgroundColor: '#BC011E',
+    backgroundColor: '#333E52',
     height: 238,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
