@@ -62,6 +62,11 @@ const AddUser = ({route}) => {
       return showToast('Lengkapi semua form!', 'danger');
     }
 
+    if (username.includes(' ')) {
+      setIsLoading(false);
+      return showToast('Username dilarang pakai spasi!', 'danger');
+    }
+
     const data = {
       name,
       username,

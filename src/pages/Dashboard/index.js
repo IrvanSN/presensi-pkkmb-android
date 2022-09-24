@@ -166,10 +166,10 @@ const Dashboard = ({route}) => {
           {accountData.accountType === 'Master' && (
             <>
               <CardMenu
-                title="Data Maba"
-                type="data-maba"
+                title="Histori"
+                type="histori"
                 onPress={() =>
-                  navigation.navigate('UserGroupData', {
+                  navigation.navigate('History', {
                     attendanceData,
                     accountData,
                   })
@@ -188,10 +188,10 @@ const Dashboard = ({route}) => {
             </>
           )}
           <CardMenu
-            title="Histori"
-            type="histori"
+            title="Data Maba"
+            type="data-maba"
             onPress={() =>
-              navigation.navigate('History', {
+              navigation.navigate('UserGroupData', {
                 attendanceData,
                 accountData,
               })
