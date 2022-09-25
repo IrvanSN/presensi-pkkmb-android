@@ -10,12 +10,23 @@ const UserCard = ({
   name,
   vaccineCount,
   groupName,
+  transaction,
   onPressChangeData,
   accountData,
   prodi,
 }) => {
   const navigation = useNavigation();
   const [clickCount, setClickCount] = useState(0);
+
+  const dayOne = transaction.filter(
+    item => item.attendance.title === 'Selasa, 27 September',
+  )[0];
+  const dayTwo = transaction.filter(
+    item => item.attendance.title === 'Rabu, 28 September',
+  )[0];
+  const dayThree = transaction.filter(
+    item => item.attendance.title === 'Kamis, 29 September',
+  )[0];
 
   const onDeleteData = () => {
     setClickCount(clickCount + 1);
@@ -50,6 +61,79 @@ const UserCard = ({
         <Text style={styles.descriptionText}>Vaksin ke-{vaccineCount}</Text>
         <Text style={styles.descriptionText}>Prodi: {prodi}</Text>
         <Text style={styles.descriptionText}>Laskar: {groupName}</Text>
+        <View style={{flexDirection: 'row'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={styles.descriptionText}>Day 1:</Text>
+            <View
+              style={{
+                borderRadius: 3,
+                marginLeft: 5,
+                backgroundColor: dayOne
+                  ? dayOne.status === 'Hadir'
+                    ? 'green'
+                    : dayOne.status === 'Sakit' || dayOne.status === 'Izin'
+                    ? 'yellow'
+                    : 'red'
+                  : 'red',
+                width: 20,
+                height: 10,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginLeft: 15,
+            }}>
+            <Text style={styles.descriptionText}>Day 2:</Text>
+            <View
+              style={{
+                borderRadius: 3,
+                marginLeft: 5,
+                backgroundColor: dayTwo
+                  ? dayTwo.status === 'Hadir'
+                    ? 'green'
+                    : dayTwo.status === 'Sakit' || dayTwo.status === 'Izin'
+                    ? 'yellow'
+                    : 'red'
+                  : 'red',
+                width: 20,
+                height: 10,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginLeft: 15,
+            }}>
+            <Text style={styles.descriptionText}>Day 3:</Text>
+            <View
+              style={{
+                borderRadius: 3,
+                marginLeft: 5,
+                backgroundColor: dayThree
+                  ? dayThree.status === 'Hadir'
+                    ? 'green'
+                    : dayThree.status === 'Sakit' || dayThree.status === 'Izin'
+                    ? 'yellow'
+                    : 'red'
+                  : 'red',
+                width: 20,
+                height: 10,
+              }}
+            />
+          </View>
+        </View>
       </View>
       <View style={styles.buttonWrapper}>
         <TouchableOpacity

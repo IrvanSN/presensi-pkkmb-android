@@ -110,6 +110,7 @@ const UserData = ({route}) => {
                   name={item.name}
                   prodi={item.prodi}
                   vaccineCount={item.vaccine.count}
+                  transaction={item.transaction}
                   id={item._id}
                   key={item._id}
                   accountData={accountData}
@@ -131,6 +132,7 @@ const UserData = ({route}) => {
                   name={item.name}
                   prodi={item.prodi}
                   vaccineCount={item.vaccine.count}
+                  transaction={item.transaction}
                   id={item._id}
                   key={item._id}
                   accountData={accountData}
