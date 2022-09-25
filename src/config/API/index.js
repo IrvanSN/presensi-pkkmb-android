@@ -1,3 +1,3 @@
 export const API_HOST = {
-  url: 'https://api.dm-presence.irvansn.com',
+  url: 'https://api.pkkmb-presensi.irvansn.com',
 };
