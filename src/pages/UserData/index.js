@@ -113,6 +113,7 @@ const UserData = ({route}) => {
                   id={item._id}
                   key={item._id}
                   accountData={accountData}
+                  attendanceData={attendanceData}
                   onPressChangeData={() =>
                     navigation.navigate('DetailUserData', {
                       userData: item,
@@ -133,6 +134,7 @@ const UserData = ({route}) => {
                   id={item._id}
                   key={item._id}
                   accountData={accountData}
+                  attendanceData={attendanceData}
                   onPressChangeData={() =>
                     navigation.navigate('DetailUserData', {
                       userData: item,

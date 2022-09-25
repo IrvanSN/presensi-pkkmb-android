@@ -72,7 +72,7 @@ const DetailUserData = ({route}) => {
         })
         .catch(e => generateError(e, navigation));
     } else {
-      if (!(name && selectedGroupName && vaccineCount && vaccineProof)) {
+      if (!(name && selectedGroupName && vaccineCount)) {
         return showToast('Lengkapi semua data!', 'info');
       }
 
