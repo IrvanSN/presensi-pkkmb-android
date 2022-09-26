@@ -77,7 +77,7 @@ const ScanIn = ({route}) => {
 
     setTimeout(() => {
       setScanned(false);
-    }, 2100);
+    }, 2000);
   };
 
   if (!fontsLoaded) {

@@ -20,6 +20,7 @@ const DetailUserData = ({route}) => {
   const {accountData, userData, attendanceData, groupData, type} = route.params;
   const navigation = useNavigation();
   const [name, setName] = useState(userData.name);
+  const [prodi, setProdi] = useState(userData.prodi);
   const [vaccineCount, setVaccineCount] = useState(
     userData.vaccine.count.toString(),
   );
@@ -56,6 +57,7 @@ const DetailUserData = ({route}) => {
     if (type === 'updateData') {
       const data = {
         name,
+        prodi,
         group: selectedGroupName,
         vaccineCount,
         vaccineProof,
@@ -78,6 +80,7 @@ const DetailUserData = ({route}) => {
 
       const data = {
         name,
+        prodi,
         group: selectedGroupName,
         vaccineCount,
         vaccineProof,
@@ -110,6 +113,12 @@ const DetailUserData = ({route}) => {
           style={styles.inputText}
           value={name}
           onChangeText={value => setName(value)}
+        />
+        <Text style={styles.inputTextLabel}>Prodi</Text>
+        <TextInput
+          style={styles.inputText}
+          value={prodi}
+          onChangeText={value => setProdi(value)}
         />
         <Text style={styles.inputTextLabel}>Laskar</Text>
         <View style={styles.groupNameDropdown}>
