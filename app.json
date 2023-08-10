@@ -2,7 +2,7 @@
   "expo": {
     "name": "DM Presence",
     "slug": "presensipkkmb",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon-app/icon.png",
     "userInterfaceStyle": "light",
@@ -12,7 +12,8 @@
       "backgroundColor": "#F5F5F5"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/30eff928-24db-442f-8504-becefef70a0b"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -30,6 +31,14 @@
     },
     "web": {
       "favicon": "./src/assets/icon-app/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "30eff928-24db-442f-8504-becefef70a0b"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }
